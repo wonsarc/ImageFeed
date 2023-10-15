@@ -7,17 +7,15 @@
 
 import UIKit
 
-class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
     
-    @IBOutlet private var tableView: UITableView!
-    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
-    private lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
-    }()
+    // MARK: - IB Outlets
+    @IBOutlet private weak var tableView: UITableView!
     
+    // MARK: - Public Properties
+    let photosName: [String] = Array(0..<20).map{ "\($0)" }
+    
+    // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
@@ -25,26 +23,9 @@ class ImagesListViewController: UIViewController {
         
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
-    
-    private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        cell.cellView.layer.cornerRadius = 16
-        cell.cellView.layer.masksToBounds = true
-        
-        if let photoImage: UIImage = UIImage(named: photosName[indexPath.row]) {
-            cell.cellView.image = photoImage
-            cell.dateLabel.text = dateFormatter.string(from: Date())
-        } else {return}
-        
-        if indexPath.row % 2 == 0 {
-            cell.likeButton.setImage(UIImage(named: "No Active"), for: .normal)
-        } else {
-            cell.likeButton.setImage(UIImage(named: "Active"), for: .normal)
-        }
-    }
 }
 
-
-
+// MARK: - UITableViewDelegate
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -64,6 +45,7 @@ extension ImagesListViewController: UITableViewDelegate {
     
 }
 
+// MARK: - UITableViewDataSource
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return photosName.count
@@ -76,7 +58,7 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        configCell(for: imageListCell, with: indexPath)
+        ImagesListCell().configCell(for: imageListCell, with: indexPath)
         
         return imageListCell
     }
