@@ -8,9 +8,13 @@
 import UIKit
 
 final class ImagesListViewController: UIViewController {
-    
     // MARK: - IB Outlets
-    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var tableView: UITableView!{
+        didSet {
+            tableView.dataSource = self
+            tableView.delegate = self
+        }
+    }
     
     // MARK: - Public Properties
     let photosName: [String] = Array(0..<20).map{ "\($0)" }
@@ -18,9 +22,6 @@ final class ImagesListViewController: UIViewController {
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.delegate = self
-        tableView.dataSource = self
-        
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
 }
@@ -42,7 +43,6 @@ extension ImagesListViewController: UITableViewDelegate {
         let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
     }
-    
 }
 
 // MARK: - UITableViewDataSource

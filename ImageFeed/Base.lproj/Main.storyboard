@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -21,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <color key="backgroundColor" name="YP Black"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="272" id="bwD-Rq-tXp" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationWidth="10" reuseIdentifier="ImagesListCell" rowHeight="272" id="bwD-Rq-tXp" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="393" height="272"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bwD-Rq-tXp" id="jEg-Oe-1wt">
@@ -29,10 +30,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="cjX-UI-QJN" userLabel="Cell View">
-                                                    <rect key="frame" x="20" y="11" width="353" height="250"/>
+                                                    <rect key="frame" x="16" y="4" width="361" height="264"/>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4UC-yo-2vZ" userLabel="Like Button">
-                                                    <rect key="frame" x="326" y="11" width="44" height="44"/>
+                                                    <rect key="frame" x="329" y="11" width="44" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="AXk-yi-tdD"/>
                                                         <constraint firstAttribute="width" constant="44" id="nwN-id-Qid"/>
@@ -46,29 +47,45 @@
                                                         <color key="baseForegroundColor" name="YP Red"/>
                                                     </buttonConfiguration>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J26-sd-Nic" userLabel="Date Label">
-                                                    <rect key="frame" x="28" y="253" width="0.0" height="0.0"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <color key="textColor" name="YP White"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rxt-Hy-BVc" userLabel="Gradient View">
+                                                    <rect key="frame" x="16" y="256" width="361" height="12"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J26-sd-Nic" userLabel="Date Label">
+                                                            <rect key="frame" x="8" y="4" width="152" height="0.0"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="152" id="scP-5K-1FO"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <color key="textColor" name="YP White"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="J26-sd-Nic" secondAttribute="bottom" constant="8" id="NCc-yN-ZXb"/>
+                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="J26-sd-Nic" secondAttribute="trailing" constant="20" symbolic="YES" id="bDT-EQ-ZJB"/>
+                                                        <constraint firstItem="J26-sd-Nic" firstAttribute="leading" secondItem="Rxt-Hy-BVc" secondAttribute="leading" constant="8" id="evz-oj-JkA"/>
+                                                        <constraint firstItem="J26-sd-Nic" firstAttribute="top" secondItem="Rxt-Hy-BVc" secondAttribute="top" constant="4" id="ush-JA-FPN"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" name="YP Black"/>
                                             <constraints>
-                                                <constraint firstItem="4UC-yo-2vZ" firstAttribute="top" secondItem="cjX-UI-QJN" secondAttribute="top" id="6RX-Gq-lag"/>
-                                                <constraint firstItem="cjX-UI-QJN" firstAttribute="trailing" secondItem="jEg-Oe-1wt" secondAttribute="trailingMargin" id="CYX-nT-f7P"/>
-                                                <constraint firstItem="cjX-UI-QJN" firstAttribute="top" secondItem="jEg-Oe-1wt" secondAttribute="topMargin" id="CdX-3U-PqV"/>
-                                                <constraint firstItem="cjX-UI-QJN" firstAttribute="bottom" secondItem="J26-sd-Nic" secondAttribute="bottom" constant="8" id="Jxh-yl-95m"/>
-                                                <constraint firstItem="cjX-UI-QJN" firstAttribute="leading" secondItem="jEg-Oe-1wt" secondAttribute="leadingMargin" id="MB4-2z-ehm"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="4UC-yo-2vZ" secondAttribute="trailing" constant="3" id="WKG-jz-EJd"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="J26-sd-Nic" secondAttribute="trailing" constant="20" symbolic="YES" id="ZS3-Ms-uAg"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="cjX-UI-QJN" secondAttribute="bottom" id="mEr-Ml-V4q"/>
-                                                <constraint firstItem="J26-sd-Nic" firstAttribute="leading" secondItem="cjX-UI-QJN" secondAttribute="leading" constant="8" id="mvM-Gb-vdY"/>
+                                                <constraint firstAttribute="trailing" secondItem="cjX-UI-QJN" secondAttribute="trailing" constant="16" id="3if-zU-ENK"/>
+                                                <constraint firstAttribute="topMargin" secondItem="4UC-yo-2vZ" secondAttribute="top" id="5aP-CG-YwN"/>
+                                                <constraint firstItem="Rxt-Hy-BVc" firstAttribute="leading" secondItem="cjX-UI-QJN" secondAttribute="leading" id="IVf-2d-fen"/>
+                                                <constraint firstItem="cjX-UI-QJN" firstAttribute="trailing" secondItem="Rxt-Hy-BVc" secondAttribute="trailing" id="Nnt-Rk-T4l"/>
+                                                <constraint firstItem="cjX-UI-QJN" firstAttribute="bottom" secondItem="Rxt-Hy-BVc" secondAttribute="bottom" id="UIE-he-98n"/>
+                                                <constraint firstItem="cjX-UI-QJN" firstAttribute="top" secondItem="jEg-Oe-1wt" secondAttribute="top" constant="4" id="e35-ut-aHH"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="4UC-yo-2vZ" secondAttribute="trailing" id="iUz-1z-hnd"/>
+                                                <constraint firstItem="cjX-UI-QJN" firstAttribute="leading" secondItem="jEg-Oe-1wt" secondAttribute="leading" constant="16" id="kDs-NA-B6T"/>
+                                                <constraint firstAttribute="bottom" secondItem="cjX-UI-QJN" secondAttribute="bottom" constant="4" id="kqe-c4-BHA"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="cellView" destination="cjX-UI-QJN" id="hO6-Ul-CXD"/>
                                             <outlet property="dateLabel" destination="J26-sd-Nic" id="ovW-1k-O8R"/>
+                                            <outlet property="gradientView" destination="Rxt-Hy-BVc" id="7JP-eh-WcU"/>
                                             <outlet property="likeButton" destination="4UC-yo-2vZ" id="9Qx-dC-uFf"/>
                                         </connections>
                                     </tableViewCell>
@@ -105,5 +122,8 @@
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
