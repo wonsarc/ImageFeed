@@ -13,16 +13,24 @@ final class ImagesListViewController: UIViewController {
         didSet {
             tableView.dataSource = self
             tableView.delegate = self
+            tableView.register(UINib(nibName: ImagesListCell.reuseIdentifier, bundle: nil),
+                               forCellReuseIdentifier: ImagesListCell.reuseIdentifier)
+            tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         }
     }
     
     // MARK: - Public Properties
-    let photosName: [String] = Array(0..<20).map{ "\($0)" }
+    private let photosName: [String] = Array(0..<20).map{"\($0)"}
+    private lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        return formatter
+    }()
     
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
 }
 
@@ -58,7 +66,14 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        ImagesListCell().configCell(for: imageListCell, with: indexPath)
+        let imageCell = UIImage(named: photosName[indexPath.row])
+        let isLiked = indexPath.row % 2 == 0 ? true : false
+        
+        imageListCell.configureCell(
+            image: imageCell,
+            date: dateFormatter.string(from: Date()),
+            isLiked: isLiked
+        )
         
         return imageListCell
     }
