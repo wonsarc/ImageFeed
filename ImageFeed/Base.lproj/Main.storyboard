@@ -1,14 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fnG-EN-JEF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fnG-EN-JEF">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--SingleImageView Controller-->
+        <scene sceneID="T0L-Ge-tT0">
+            <objects>
+                <viewController modalPresentationStyle="fullScreen" id="msx-n6-C1z" userLabel="SingleImageView Controller" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="qkf-PE-RYM">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="EeI-3p-eHJ" userLabel="Image View">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                <color key="backgroundColor" name="YP Black"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6nO-2L-eOX">
+                                <rect key="frame" x="8" y="8" width="48" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48" id="hez-Fx-4Vo"/>
+                                    <constraint firstAttribute="height" constant="48" id="wIw-aL-Pqg"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="BackwardWhite"/>
+                                <connections>
+                                    <action selector="didTapBackButton:" destination="msx-n6-C1z" eventType="touchUpInside" id="ENA-ed-v7i"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Wab-yH-9d7"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="EeI-3p-eHJ" firstAttribute="leading" secondItem="qkf-PE-RYM" secondAttribute="leading" id="ELC-9R-jVb"/>
+                            <constraint firstAttribute="trailing" secondItem="EeI-3p-eHJ" secondAttribute="trailing" id="F2p-8j-GCF"/>
+                            <constraint firstAttribute="bottom" secondItem="EeI-3p-eHJ" secondAttribute="bottom" id="IVx-cR-dEF"/>
+                            <constraint firstItem="6nO-2L-eOX" firstAttribute="leading" secondItem="Wab-yH-9d7" secondAttribute="leading" constant="8" id="KPa-zX-QNA"/>
+                            <constraint firstItem="EeI-3p-eHJ" firstAttribute="top" secondItem="qkf-PE-RYM" secondAttribute="top" id="Ylc-Ew-jx6"/>
+                            <constraint firstItem="6nO-2L-eOX" firstAttribute="top" secondItem="Wab-yH-9d7" secondAttribute="top" constant="8" id="hcX-T9-ymc"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="dGi-1t-urb"/>
+                    <connections>
+                        <outlet property="photoSingleImageView" destination="EeI-3p-eHJ" id="s42-6t-tF7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bev-QT-Lfd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="827" y="-1870"/>
+        </scene>
         <!--ImageList-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -31,14 +76,15 @@
                             <constraint firstItem="JnJ-M2-lea" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="naY-gE-4WO"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="uSU-7T-3PB"/>
+                    <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="6cI-5P-ZI4"/>
                     <connections>
                         <outlet property="tableView" destination="JnJ-M2-lea" id="QYb-mV-BC9"/>
+                        <segue destination="msx-n6-C1z" kind="presentation" identifier="ShowSingleImage" id="exU-MH-thj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75.572519083969468" y="-2.1126760563380285"/>
+            <point key="canvasLocation" x="-16" y="-1870"/>
         </scene>
         <!--ProfileView-->
         <scene sceneID="mFM-fV-iqd">
@@ -126,7 +172,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ixe-Ha-RBO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-350" y="-679"/>
+            <point key="canvasLocation" x="-16" y="-1199"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="aTd-14-515">
@@ -142,16 +188,18 @@
                         </tabBarAppearance>
                     </tabBar>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="8Q6-fH-Gaz"/>
-                        <segue destination="Mvo-Uc-tya" kind="relationship" relationship="viewControllers" id="nKE-JB-6PV"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="6Uc-0a-gPB"/>
+                        <segue destination="Mvo-Uc-tya" kind="relationship" relationship="viewControllers" id="zAr-WD-H7c"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w5X-k3-uMu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-108" y="-1356"/>
+            <point key="canvasLocation" x="-1297" y="-1526"/>
         </scene>
     </scenes>
     <resources>
+        <image name="0" width="200" height="132"/>
+        <image name="BackwardWhite" width="24" height="24"/>
         <image name="LogOut" width="20" height="22"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_no_active" width="30" height="30"/>
