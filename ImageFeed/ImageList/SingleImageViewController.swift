@@ -37,10 +37,10 @@ final class SingleImageViewController: UIViewController {
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        photoSingleImageView.image = image
-        rescaleAndCenterImageInScrollView(image: image)
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
+        photoSingleImageView.image = image
+        rescaleAndCenterImageInScrollView(image: image)
     }
     
     // MARK: - Private func
