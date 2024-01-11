@@ -11,62 +11,47 @@ final class ProfileViewController: UIViewController {
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        let logoImageView = addLogoImageView(name: "profilePhoto")
-        let nameLabel = addNameLabel(text: "Екатерина Новикова")
-        let loginLabel = addLoginLabel(text: "@ekaterina_nov")
-        let logoutButton = addLogoutButton()
-        let descriptionLabel = addDescriptionLabel(text: "Hello, world!")
-        
-        setConstraints(
-            logoImageView: logoImageView,
-            nameLabel: nameLabel,
-            loginLabel: loginLabel,
-            descriptionLabel: descriptionLabel,
-            logoutButton: logoutButton
-        )
+        setupViews()
+        setupConstraints()
     }
     
-    // MARK: - Private Func
-    private func addLogoImageView(name: String) -> UIImageView {
+    // MARK: - Private Properties
+    private lazy var logoImageView: UIImageView = {
         let logoImageView = UIImageView()
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         logoImageView.layer.cornerRadius = 16
-        logoImageView.image = UIImage(named: name)
-        view.addSubview(logoImageView)
+        logoImageView.image = UIImage(named: "profilePhoto")
         return logoImageView
-    }
+    }()
     
-    private func addNameLabel(text: String) -> UILabel {
+    private lazy var nameLabel: UILabel = {
         let nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.text = text
+        nameLabel.text = "Екатерина Новикова"
         nameLabel.textColor = .ypWhite
         nameLabel.font = .boldSystemFont(ofSize: 23)
-        view.addSubview(nameLabel)
         return nameLabel
-    }
+    }()
     
-    private func addLoginLabel(text: String) -> UILabel {
+    private lazy var loginLabel: UILabel = {
         let loginLabel = UILabel()
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
-        loginLabel.text = text
+        loginLabel.text = "@ekaterina_nov"
         loginLabel.textColor = .ypGray
         loginLabel.font = .systemFont(ofSize: 13)
-        view.addSubview(loginLabel)
         return loginLabel
-    }
+    }()
     
-    private func addDescriptionLabel(text: String) -> UILabel {
+    private lazy var descriptionLabel: UILabel = {
         let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.text = text
+        descriptionLabel.text = "Hello, world!"
         descriptionLabel.textColor = .ypWhite
         descriptionLabel.font = .systemFont(ofSize: 13)
-        view.addSubview(descriptionLabel)
         return descriptionLabel
-    }
+    }()
     
-    private func addLogoutButton() -> UIButton {
+    private lazy var logoutButton: UIButton = {
         let logoutButton = UIButton.systemButton(
             with: UIImage(named: "LogOut") ?? UIImage(),
             target: self,
@@ -74,17 +59,19 @@ final class ProfileViewController: UIViewController {
         )
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.tintColor = .ypRed
-        view.addSubview(logoutButton)
         return logoutButton
+    }()
+    
+    // MARK: - Private Func
+    private func setupViews() {
+        view.addSubview(logoImageView)
+        view.addSubview(nameLabel)
+        view.addSubview(loginLabel)
+        view.addSubview(descriptionLabel)
+        view.addSubview(logoutButton)
     }
     
-    private func setConstraints(
-        logoImageView: UIImageView,
-        nameLabel: UILabel,
-        loginLabel: UILabel,
-        descriptionLabel: UILabel,
-        logoutButton: UIButton
-    ) {
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             logoImageView.widthAnchor.constraint(equalToConstant: 70),
             logoImageView.heightAnchor.constraint(equalToConstant: 70),
@@ -111,6 +98,7 @@ final class ProfileViewController: UIViewController {
             descriptionLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 8),
             descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16)
         ])
+        
     }
     
     @objc
