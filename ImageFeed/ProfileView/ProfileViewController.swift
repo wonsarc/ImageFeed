@@ -20,7 +20,7 @@ final class ProfileViewController: UIViewController {
         let logoImageView = UIImageView()
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         logoImageView.layer.cornerRadius = 16
-        logoImageView.image = UIImage(named: "profilePhoto")
+        logoImageView.image = UIImage(named: "PhotoProfile")
         return logoImageView
     }()
     

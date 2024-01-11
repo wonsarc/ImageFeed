@@ -17,15 +17,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jld-V4-7yF">
-                                <rect key="frame" x="-20" y="-20" width="433" height="892"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jld-V4-7yF">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="EeI-3p-eHJ" userLabel="Image View">
-                                        <rect key="frame" x="20" y="20" width="393" height="852"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="EeI-3p-eHJ" userLabel="Image View">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="132"/>
                                         <color key="backgroundColor" name="YP Black"/>
                                     </imageView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="EeI-3p-eHJ" secondAttribute="trailing" id="CnF-NC-jME"/>
+                                    <constraint firstItem="EeI-3p-eHJ" firstAttribute="top" secondItem="Jld-V4-7yF" secondAttribute="top" id="Ojw-43-S1N"/>
+                                    <constraint firstItem="EeI-3p-eHJ" firstAttribute="leading" secondItem="Jld-V4-7yF" secondAttribute="leading" id="XNK-At-rbk"/>
+                                    <constraint firstAttribute="bottom" secondItem="EeI-3p-eHJ" secondAttribute="bottom" id="foB-Bx-gzA"/>
+                                </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="KFx-1m-Kxt"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="2Vs-HM-Jpk"/>
                                 <connections>
