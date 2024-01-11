@@ -89,7 +89,7 @@ final class ProfileViewController: UIViewController {
             logoImageView.widthAnchor.constraint(equalToConstant: 70),
             logoImageView.heightAnchor.constraint(equalToConstant: 70),
             logoImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 52),
+            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
             
             logoutButton.widthAnchor.constraint(equalToConstant: 48),
             logoutButton.heightAnchor.constraint(equalToConstant: 48),
