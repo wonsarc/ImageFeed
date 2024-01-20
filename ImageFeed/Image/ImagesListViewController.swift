@@ -7,10 +7,9 @@
 
 import UIKit
 
+private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
+
 final class ImagesListViewController: UIViewController {
-    // MARK: - Constants
-    private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
-    
     // MARK: - IB Outlets
     @IBOutlet private weak var tableView: UITableView!{
         didSet {
