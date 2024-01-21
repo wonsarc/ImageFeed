@@ -14,7 +14,7 @@ final class ProfileViewController: UIViewController {
         setupViews()
         setupConstraints()
     }
-    
+
     // MARK: - Private Properties
     private lazy var logoImageView: UIImageView = {
         let logoImageView = UIImageView()
@@ -23,7 +23,7 @@ final class ProfileViewController: UIViewController {
         logoImageView.image = UIImage(named: "PhotoProfile")
         return logoImageView
     }()
-    
+
     private lazy var nameLabel: UILabel = {
         let nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -32,7 +32,7 @@ final class ProfileViewController: UIViewController {
         nameLabel.font = .boldSystemFont(ofSize: 23)
         return nameLabel
     }()
-    
+
     private lazy var loginLabel: UILabel = {
         let loginLabel = UILabel()
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -41,7 +41,7 @@ final class ProfileViewController: UIViewController {
         loginLabel.font = .systemFont(ofSize: 13)
         return loginLabel
     }()
-    
+
     private lazy var descriptionLabel: UILabel = {
         let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +50,7 @@ final class ProfileViewController: UIViewController {
         descriptionLabel.font = .systemFont(ofSize: 13)
         return descriptionLabel
     }()
-    
+
     private lazy var logoutButton: UIButton = {
         let logoutButton = UIButton.systemButton(
             with: UIImage(named: "LogOut") ?? UIImage(),
@@ -61,7 +61,7 @@ final class ProfileViewController: UIViewController {
         logoutButton.tintColor = .ypRed
         return logoutButton
     }()
-    
+
     // MARK: - Private Func
     private func setupViews() {
         view.addSubview(logoImageView)
@@ -70,37 +70,37 @@ final class ProfileViewController: UIViewController {
         view.addSubview(descriptionLabel)
         view.addSubview(logoutButton)
     }
-    
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             logoImageView.widthAnchor.constraint(equalToConstant: 70),
             logoImageView.heightAnchor.constraint(equalToConstant: 70),
             logoImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
-            
+
             logoutButton.widthAnchor.constraint(equalToConstant: 48),
             logoutButton.heightAnchor.constraint(equalToConstant: 48),
             logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
             logoutButton.centerYAnchor.constraint(equalTo: logoImageView.centerYAnchor),
-            
+
             nameLabel.widthAnchor.constraint(equalToConstant: 700),
             nameLabel.heightAnchor.constraint(equalToConstant: 18),
             nameLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 8),
             nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            
+
             loginLabel.widthAnchor.constraint(equalToConstant: 400),
             loginLabel.heightAnchor.constraint(equalToConstant: 18),
             loginLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             loginLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            
+
             descriptionLabel.widthAnchor.constraint(equalToConstant: 400),
             descriptionLabel.heightAnchor.constraint(equalToConstant: 18),
             descriptionLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 8),
             descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16)
         ])
-        
+
     }
-    
+
     @objc
     private func didTapLogoutButton() {
     }

@@ -16,31 +16,31 @@ final class OAuth2Service {
             OAuth2TokenStorage().token = newValue ?? ""
         }
     }
-    
+
     func fetchOAuthToken(
         _ code: String,
-        completion: @escaping (Result<String, Error>) -> Void ){
+        completion: @escaping (Result<String, Error>) -> Void ) {
             let url = createAuthTokenUrl(code)
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
-            
+
             let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                 if let data = data,
                    let response = response,
-                   let statusCode = (response as? HTTPURLResponse)?.statusCode
-                {                if 200 ..< 300 ~= statusCode {
-                    do {
-                        let json =  try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                        self.authToken = json.accessToken
-                    } catch {
-                        print(error)
+                   let statusCode = (response as? HTTPURLResponse)?.statusCode {
+                    if 200 ..< 300 ~= statusCode {
+                        do {
+                            let json =  try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
+                            self.authToken = json.accessToken
+                        } catch {
+                            print(error)
+                        }
                     }
-                }
                 }
             }
             task.resume()
         }
-    
+
     private func createAuthTokenUrl(_ code: String) -> URL {
         var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token")
         urlComponents?.queryItems = [
