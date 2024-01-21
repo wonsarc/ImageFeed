@@ -17,7 +17,6 @@ final class OAuth2Service {
         }
     }
     
-    
     func fetchOAuthToken(
         _ code: String,
         completion: @escaping (Result<String, Error>) -> Void ){
@@ -41,8 +40,6 @@ final class OAuth2Service {
             }
             task.resume()
         }
-    
-    
     
     private func createAuthTokenUrl(_ code: String) -> URL {
         var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token")

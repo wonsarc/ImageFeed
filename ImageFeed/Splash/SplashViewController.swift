@@ -33,10 +33,9 @@ extension SplashViewController: AuthViewControllerDelegate {
                 guard self != nil else { return }
             }
         })
-        
         while(OAuth2TokenStorage().token == ""){
         }
-        self.switchToTabBarController()
+        self.switchToTabBarController() //todo 
     }
 }
 
