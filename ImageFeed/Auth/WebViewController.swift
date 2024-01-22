@@ -63,7 +63,6 @@ final class WebViewController: UIViewController {
             forKeyPath: #keyPath(WKWebView.estimatedProgress),
             options: .new,
             context: nil
-            
         )
     }
 

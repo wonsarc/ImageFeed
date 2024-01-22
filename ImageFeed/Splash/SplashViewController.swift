@@ -13,7 +13,7 @@ final class SplashViewController: UIViewController {
     // MARK: - View Life Cycles
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if OAuth2TokenStorage().token == "" {
+        if OAuth2TokenStorage.shared.token == "" {
             performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
         } else {
             switchToTabBarController()
@@ -37,8 +37,6 @@ extension SplashViewController: AuthViewControllerDelegate {
                 guard self != nil else { return }
             }
         })
-        while(OAuth2TokenStorage().token == "") {
-        }
         self.switchToTabBarController()
     }
 }
