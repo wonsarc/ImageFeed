@@ -13,13 +13,13 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet private weak var likeButton: UIButton!
     @IBOutlet private weak var dateLabel: UILabel!
     @IBOutlet private weak var gradientView: UIView!
-    
+
     // MARK: - Private Properties
     private var isGradient: Bool = false
-    
+
     // MARK: - Public Properties
     static let reuseIdentifier = "ImagesListCell"
-    
+
     // MARK: - Public Methods
     func configureCell(image: UIImage?, date: String, isLiked: Bool) {
         cellView.layer.cornerRadius = 16
@@ -29,7 +29,7 @@ final class ImagesListCell: UITableViewCell {
         let likedButtonImage = isLiked ? "Active" : "No Active"
         likeButton.setImage(UIImage(named: likedButtonImage), for: .normal)
     }
-    
+
     // MARK: - Private Methods
     private func configGradientView() {
         gradientView.backgroundColor = .clear
@@ -43,11 +43,11 @@ final class ImagesListCell: UITableViewCell {
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 0.0)
         gradientView.layer.insertSublayer(gradientLayer, at: 0)
     }
-    
+
     // MARK: - Override Methods
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         if !isGradient {
             configGradientView()
             isGradient = true
