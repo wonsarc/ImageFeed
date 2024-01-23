@@ -30,7 +30,9 @@ final class OAuth2Service {
                    let statusCode = (response as? HTTPURLResponse)?.statusCode {
                     if 200 ..< 300 ~= statusCode {
                         do {
-                            let json =  try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
+                            let decoder = JSONDecoder()
+                            decoder.keyDecodingStrategy = .convertFromSnakeCase
+                            let json =  try decoder.decode(OAuthTokenResponseBody.self, from: data)
                             self.authToken = json.accessToken
                         } catch {
                             print(error)
