@@ -17,14 +17,22 @@ final class OAuth2Service {
         }
     }
 
+    private var lastCode: String?
+    private var task: URLSessionTask?
+
     func fetchOAuthToken(
         _ code: String,
         completion: @escaping (Result<String, Error>) -> Void ) {
+            assert(Thread.isMainThread)
+            if lastCode == code {return}
+            task?.cancel()
+            lastCode = code
+
             let url = createAuthTokenUrl(code)
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
 
-            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                 if let data = data,
                    let response = response,
                    let statusCode = (response as? HTTPURLResponse)?.statusCode {
@@ -40,7 +48,7 @@ final class OAuth2Service {
                     }
                 }
             }
-            task.resume()
+            task?.resume()
         }
 
     private func createAuthTokenUrl(_ code: String) -> URL {

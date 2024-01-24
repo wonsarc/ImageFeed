@@ -33,13 +33,13 @@ final class SplashViewController: UIViewController {
 // MARK: - Extension
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ viewController: AuthViewController, didAuthenticateWithCode code: String) {
-        ProgressHUD.animate("Please wait...", .ballVerticalBounce)
+        UIBlockingProgressHUD.animate()
         OAuth2Service().fetchOAuthToken(code, completion: { [weak self] _ in
             DispatchQueue.main.async {
                 guard self == self else { return }
             }
         })
-        ProgressHUD.dismiss()
+        UIBlockingProgressHUD.dismiss()
         self.switchToTabBarController()
     }
 }
