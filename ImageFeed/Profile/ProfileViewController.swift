@@ -13,6 +13,20 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        ProfileService().fetchProfile(
+            OAuth2TokenStorage.shared.token,
+            completion: { [weak self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let profile):
+                        self?.nameLabel.text = profile.name
+                        self?.loginLabel.text = profile.loginName
+                        self?.descriptionLabel.text = profile.bio
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+        })
     }
 
     // MARK: - Private Properties
@@ -27,7 +41,6 @@ final class ProfileViewController: UIViewController {
     private lazy var nameLabel: UILabel = {
         let nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.text = "Екатерина Новикова"
         nameLabel.textColor = .ypWhite
         nameLabel.font = .boldSystemFont(ofSize: 23)
         return nameLabel
@@ -36,7 +49,6 @@ final class ProfileViewController: UIViewController {
     private lazy var loginLabel: UILabel = {
         let loginLabel = UILabel()
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
-        loginLabel.text = "@ekaterina_nov"
         loginLabel.textColor = .ypGray
         loginLabel.font = .systemFont(ofSize: 13)
         return loginLabel
@@ -45,7 +57,6 @@ final class ProfileViewController: UIViewController {
     private lazy var descriptionLabel: UILabel = {
         let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.text = "Hello, world!"
         descriptionLabel.textColor = .ypWhite
         descriptionLabel.font = .systemFont(ofSize: 13)
         return descriptionLabel
