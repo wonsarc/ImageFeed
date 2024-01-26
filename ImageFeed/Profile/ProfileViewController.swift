@@ -13,20 +13,10 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
-        ProfileService().fetchProfile(
-            OAuth2TokenStorage.shared.token,
-            completion: { [weak self] result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let profile):
-                        self?.nameLabel.text = profile.name
-                        self?.loginLabel.text = profile.loginName
-                        self?.descriptionLabel.text = profile.bio
-                    case .failure(let error):
-                        print(error)
-                    }
-                }
-        })
+
+        if let profile = ProfileService.shared.profile {
+            updateProfileDetails(profile: profile)
+        }
     }
 
     // MARK: - Private Properties
@@ -110,6 +100,12 @@ final class ProfileViewController: UIViewController {
             descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16)
         ])
 
+    }
+
+    private func updateProfileDetails (profile: Profile) {
+        nameLabel.text = profile.name
+        loginLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
     }
 
     @objc
