@@ -12,6 +12,7 @@ private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
 
 final class SplashViewController: UIViewController {
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
 
     // MARK: - View Life Cycles
     override func viewDidAppear(_ animated: Bool) {
@@ -41,6 +42,18 @@ final class SplashViewController: UIViewController {
                     self?.switchToTabBarController()
                 case .failure(_):
                     UIBlockingProgressHUD.dismiss()
+                }
+            }
+        })
+
+        profileImageService.fetchProfileImageURL(username: profileService
+            .profile?.username ?? "", { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(_):
+                    print("kek")
+                case .failure(let error):
+                    print("lol")
                 }
             }
         })
