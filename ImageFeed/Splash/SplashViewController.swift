@@ -37,10 +37,11 @@ final class SplashViewController: UIViewController {
         profileService.fetchProfile(token, completion: { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
-                case .success(_):
+                case .success(let body):
                     UIBlockingProgressHUD.dismiss()
                     self?.switchToTabBarController()
-                case .failure(_):
+                case .failure(let error):
+                    self?.showAlert()
                     UIBlockingProgressHUD.dismiss()
                 }
             }
@@ -51,12 +52,22 @@ final class SplashViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let body):
-                    print("kek", body)
+                    print(body)
                 case .failure(let error):
-                    print(error)
+                    self?.showAlert()
                 }
             }
         })
+    }
+
+    private func showAlert() {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            preferredStyle: UIAlertController.Style.alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -70,7 +81,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 case .success(let token):
                     self?.fetchProfile(token: token)
                 case .failure(let error):
-                    print(error)
+                    self?.showAlert()
                 }
             }
         })
