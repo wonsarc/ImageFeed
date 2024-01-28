@@ -19,6 +19,7 @@ final class OAuth2Service {
 
     private var lastCode: String?
     private var task: URLSessionTask?
+    private let urlSession = URLSession.shared
 
     func fetchOAuthToken(
         _ code: String,
@@ -36,39 +37,18 @@ final class OAuth2Service {
                 url: url,
                 httpMethod: .POST
             )
-//            task = URLSession.shared.objectTask(for: request,
-//                                                completion: { [weak self] (result: Result<OAuthTokenResponseBody,
-//                                                                           Error>) in
-//                guard let self = self else { return }
-//                switch result {
-//                case .success(let body):
-//                    let token = body.accessToken
-//                    self.authToken = token
-//                    completion(.success(token))
-//                case .failure(let error):
-//                    completion(.failure(error))
-//                }
-//            })
-//            task?.resume()
-//        }
-
-            task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-                if let data = data,
-                   let response = response,
-                   let statusCode = (response as? HTTPURLResponse)?.statusCode {
-                    if 200 ..< 300 ~= statusCode {
-                        do {
-                            let decoder = JSONDecoder()
-                            decoder.keyDecodingStrategy = .convertFromSnakeCase
-                            let json =  try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                            self.authToken = json.accessToken
-                            completion(.success(self.authToken ?? ""))
-                        } catch {
-                            completion(.failure(error))
-                        }
-                    }
+            task = urlSession.objectTask(for: request,
+                                                completion: { (result: Result<OAuthTokenResponseBody,
+                                                                           Error>) in
+                switch result {
+                case .success(let body):
+                    let token = body.accessToken
+                    self.authToken = token
+                    completion(.success(token))
+                case .failure(let error):
+                    completion(.failure(error))
                 }
-            }
+            })
             task?.resume()
         }
 
