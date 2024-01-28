@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     private var profileImageServiceObserver: NSObjectProtocol?
@@ -126,6 +127,9 @@ final class ProfileViewController: UIViewController {
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let url = URL(string: profileImageURL)
         else { return }
+        let processor = RoundCornerImageProcessor(cornerRadius: 16)
+        self.logoImageView.kf.setImage(with: url,
+                                       options: [.processor(processor)])
     }
 
     @objc
