@@ -28,9 +28,29 @@ final class OAuth2Service {
             task?.cancel()
             lastCode = code
 
-            let url = createAuthTokenUrl(code)
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
+            let url = NetworkClient().createURL(
+                url: "https://unsplash.com/oauth/token",
+                queryItems: createQueryItems(code))
+
+            let request = NetworkClient().createRequest(
+                url: url,
+                httpMethod: .POST
+            )
+//            task = URLSession.shared.objectTask(for: request,
+//                                                completion: { [weak self] (result: Result<OAuthTokenResponseBody,
+//                                                                           Error>) in
+//                guard let self = self else { return }
+//                switch result {
+//                case .success(let body):
+//                    let token = body.accessToken
+//                    self.authToken = token
+//                    completion(.success(token))
+//                case .failure(let error):
+//                    completion(.failure(error))
+//                }
+//            })
+//            task?.resume()
+//        }
 
             task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                 if let data = data,
@@ -52,18 +72,14 @@ final class OAuth2Service {
             task?.resume()
         }
 
-    private func createAuthTokenUrl(_ code: String) -> URL {
-        var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token")
-        urlComponents?.queryItems = [
+    private func createQueryItems(_ code: String) -> [URLQueryItem] {
+        let queryItemsList = [
             URLQueryItem(name: "client_id", value: accessKey),
             URLQueryItem(name: "client_secret", value: secretKey),
             URLQueryItem(name: "redirect_uri", value: redirectURI),
             URLQueryItem(name: "code", value: code),
             URLQueryItem(name: "grant_type", value: "authorization_code")
         ]
-        guard let url = urlComponents?.url else {
-            preconditionFailure("Unable to construct authTokenUrl")
-        }
-        return url
+        return queryItemsList
     }
 }

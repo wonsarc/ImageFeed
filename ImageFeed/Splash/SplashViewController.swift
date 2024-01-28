@@ -50,10 +50,10 @@ final class SplashViewController: UIViewController {
             .profile?.username ?? "", { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
-                case .success(_):
-                    print("kek")
+                case .success(let body):
+                    print("kek", body)
                 case .failure(let error):
-                    print("lol")
+                    print(error)
                 }
             }
         })

@@ -15,49 +15,41 @@ final class ProfileImageService {
 
     private (set) var avatarURL: String?
     private var task: URLSessionTask?
+    private let urlSession = URLSession.shared
 
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         let token = OAuth2TokenStorage.shared.token
-        let url = createURL(username: username)
+        let url = NetworkClient().createURL(
+            url: getProfileImageURL,
+            queryItems: [URLQueryItem(name: "username", value: username)])
 
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        let request = NetworkClient().createRequestWithBearerAuth(
+            url: url,
+            httpMethod: .GET,
+            token: token
+        )
 
-        task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let data = data,
-               let response = response,
-               let statusCode = (response as? HTTPURLResponse)?.statusCode {
-                if 200 ..< 300 ~= statusCode {
-                    do {
-                        let decoder = JSONDecoder()
-                        decoder.keyDecodingStrategy = .convertFromSnakeCase
-                        let json = try decoder.decode(UserResult.self, from: data)
-                        self.avatarURL = json.profileImage?["small"]
-                    } catch {
-                        completion(.failure(error))
-                    }
-                }
+        task = urlSession.objectTask(for: request,
+                                     completion: { [weak self] (result: Result<UserResult,
+                                                                Error>) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let body):
+                let smallAvatarURL = body.profileImage?["small"]
+                self.avatarURL = smallAvatarURL
+                completion(.success(smallAvatarURL ?? ""))
+            case .failure(let error):
+                completion(.failure(error))
             }
-        }
+        })
         task?.resume()
+
         NotificationCenter.default
             .post(
                 name: ProfileImageService.didChangeNotification,
                 object: self,
                 userInfo: ["URL": avatarURL ?? ""]
             )
-    }
-
-    private func createURL(username: String) -> URL {
-        var urlComponents = URLComponents(string: getProfileImageURL)
-        urlComponents?.queryItems = [
-            URLQueryItem(name: "username", value: username)
-        ]
-        guard let url = urlComponents?.url else {
-            preconditionFailure("Error")
-        }
-        return url
     }
 }
