@@ -19,7 +19,7 @@ final class SplashViewController: UIViewController {
         super.viewDidAppear(animated)
         let token = OAuth2TokenStorage.shared.token
         if token == "" {
-            performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
+            transitionToAuthViewController()
         } else {
             fetchProfile(token: token)
         }
@@ -89,15 +89,16 @@ extension SplashViewController: AuthViewControllerDelegate {
 }
 
 extension SplashViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showAuthenticationScreenSegueIdentifier {
-            guard
-                let navigationController = segue.destination as? UINavigationController,
-                let viewController = navigationController.viewControllers[0] as? AuthViewController
-            else { fatalError("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)") }
-            viewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
+    func transitionToAuthViewController () {
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        let authViewController = storyboard
+            .instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController
+        guard let authViewController = authViewController else {return}
+        authViewController.delegate = self
+        authViewController.modalPresentationStyle = .fullScreen
+        self.present(
+            authViewController,
+            animated: true,
+            completion: nil)
     }
 }
