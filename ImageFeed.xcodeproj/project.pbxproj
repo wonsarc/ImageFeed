@@ -41,6 +41,7 @@
 		41519F812B67D1DF00487EEA /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		415B0A8A2AE5737600F2B2C7 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		4165C8EC2B151D4900396EAD /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
+		416A0C212B6A66B3002E253A /* ForReviewers.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ForReviewers.md; sourceTree = "<group>"; };
 		416E23562ADFBF8D00108466 /* ImagesListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImagesListCell.xib; sourceTree = "<group>"; };
 		418418EC2B6183DD00BB1348 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		418418EF2B61869900BB1348 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
@@ -179,6 +180,7 @@
 				41DE19BA2AD3187400C4E2FF /* LaunchScreen.storyboard */,
 				41DE19B52AD3187300C4E2FF /* Main.storyboard */,
 				415B0A892AE5734C00F2B2C7 /* Profile */,
+				416A0C212B6A66B3002E253A /* ForReviewers.md */,
 			);
 			path = ImageFeed;
 			sourceTree = "<group>";
