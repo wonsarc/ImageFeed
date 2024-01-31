@@ -12,6 +12,10 @@ final class ProfileViewController: UIViewController {
     private var profileImageServiceObserver: NSObjectProtocol?
 
     // MARK: - View Life Cycles
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        logoImageView.layer.cornerRadius = logoImageView.frame.size.width / 2
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
@@ -38,8 +42,7 @@ final class ProfileViewController: UIViewController {
     private lazy var logoImageView: UIImageView = {
         let logoImageView = UIImageView()
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.layer.cornerRadius = 16
-        logoImageView.image = UIImage(named: "PhotoProfile")
+        logoImageView.clipsToBounds = true
         return logoImageView
     }()
 
@@ -132,9 +135,7 @@ final class ProfileViewController: UIViewController {
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let url = URL(string: profileImageURL)
         else { return }
-        let processor = RoundCornerImageProcessor(cornerRadius: 16)
-        self.logoImageView.kf.setImage(with: url,
-                                       options: [.processor(processor)])
+        self.logoImageView.kf.setImage(with: url)
     }
 
     @objc
