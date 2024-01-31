@@ -7,15 +7,16 @@
 
 import Foundation
 
-private let getProfileMeURL = URL(string: "\(defaultBaseURL)/me")!
-
 final class ProfileService {
+    private let profileMeURL = URL(string: "\(defaultBaseURL)/me")!
     static let shared = ProfileService()
 
     private var lastToken: String?
     private var task: URLSessionTask?
     private let urlSession = URLSession.shared
     private(set) var profile: Profile?
+
+    private init() { }
 
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
@@ -24,7 +25,7 @@ final class ProfileService {
         lastToken = token
 
         let request = NetworkClient().createRequestWithBearerAuth(
-            url: getProfileMeURL,
+            url: profileMeURL,
             httpMethod: .GET,
             token: token
         )

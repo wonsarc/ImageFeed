@@ -8,15 +8,15 @@
 import UIKit
 import WebKit
 
-private let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
-private var estimatedProgressObservation: NSKeyValueObservation?
-
 protocol WebViewControllerDelegate: AnyObject {
     func webViewController(_ viewController: WebViewController, didAuthenticateWithCode code: String)
     func webViewControllerDidCancel(_ viewController: WebViewController)
 }
 
 final class WebViewController: UIViewController {
+    private let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
+    private var estimatedProgressObservation: NSKeyValueObservation?
+
     // MARK: - Properties
     weak var delegate: WebViewControllerDelegate?
 

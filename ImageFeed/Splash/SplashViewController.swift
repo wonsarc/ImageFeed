@@ -8,15 +8,28 @@
 import UIKit
 import ProgressHUD
 
-private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
-
 final class SplashViewController: UIViewController {
+    private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
 
+    private lazy var logoImageView: UIImageView = {
+        let logoImageView = UIImageView()
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        logoImageView.image = UIImage(named: "LogoOfUnsplash")
+        return logoImageView
+    }()
+
     // MARK: - View Life Cycles
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .ypBlack
+        setupViews()
+        setupConstraints()
+    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        guard UIBlockingProgressHUD.isShowing == false else { return }
         let token = OAuth2TokenStorage.shared.token
         if token == "" {
             transitionToAuthViewController()
@@ -41,8 +54,8 @@ final class SplashViewController: UIViewController {
                     UIBlockingProgressHUD.dismiss()
                     self?.switchToTabBarController()
                 case .failure(let error):
-                    self?.showAlert()
                     UIBlockingProgressHUD.dismiss()
+                    self?.showAlert()
                 }
             }
         })
@@ -61,12 +74,18 @@ final class SplashViewController: UIViewController {
     }
 
     private func showAlert() {
+        UIBlockingProgressHUD.dismiss()
         let alert = UIAlertController(
             title: "Что-то пошло не так(",
             message: "Не удалось войти в систему",
             preferredStyle: UIAlertController.Style.alert
         )
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+
+        let action = UIAlertAction(
+            title: "OK", style: UIAlertAction.Style.default) { (_) in
+                self.transitionToAuthViewController()
+        }
+        alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
     }
 }
@@ -74,6 +93,7 @@ final class SplashViewController: UIViewController {
 // MARK: - Extension
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ viewController: AuthViewController, didAuthenticateWithCode code: String) {
+        dismiss(animated: true)
         UIBlockingProgressHUD.animate()
         OAuth2Service().fetchOAuthToken(code, completion: { [weak self] result in
             DispatchQueue.main.async {
@@ -100,5 +120,18 @@ extension SplashViewController {
             authViewController,
             animated: true,
             completion: nil)
+    }
+}
+
+extension SplashViewController {
+    private func setupViews() {
+        view.addSubview(logoImageView)
+    }
+
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
     }
 }

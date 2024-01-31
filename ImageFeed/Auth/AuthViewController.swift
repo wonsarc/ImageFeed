@@ -7,14 +7,13 @@
 
 import UIKit
 
-private let showWebViewSegueIdentifier = "ShowWebView"
-
 protocol AuthViewControllerDelegate: AnyObject {
     func authViewController(_ viewController: AuthViewController, didAuthenticateWithCode code: String)
 }
 
 final class AuthViewController: UIViewController {
     // MARK: - Private Properties
+    private let showWebViewSegueIdentifier = "ShowWebView"
     weak var delegate: AuthViewControllerDelegate?
 
     private lazy var loginButton: UIButton = {
@@ -90,6 +89,7 @@ private extension AuthViewController {
 extension AuthViewController: WebViewControllerDelegate {
     func webViewController(_ viewController: WebViewController, didAuthenticateWithCode code: String) {
         delegate?.authViewController(self, didAuthenticateWithCode: code)
+        dismiss(animated: true)
     }
 
     func webViewControllerDidCancel(_ viewController: WebViewController) {

@@ -14,6 +14,7 @@ final class ProfileViewController: UIViewController {
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .ypBlack
         setupViews()
         setupConstraints()
 
@@ -62,6 +63,7 @@ final class ProfileViewController: UIViewController {
         let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.textColor = .ypWhite
+        descriptionLabel.numberOfLines = 0
         descriptionLabel.font = .systemFont(ofSize: 13)
         return descriptionLabel
     }()
@@ -102,16 +104,19 @@ final class ProfileViewController: UIViewController {
             nameLabel.heightAnchor.constraint(equalToConstant: 18),
             nameLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 8),
             nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            nameLabel.trailingAnchor.constraint(equalTo: logoutButton.leadingAnchor),
 
             loginLabel.widthAnchor.constraint(equalToConstant: 400),
             loginLabel.heightAnchor.constraint(equalToConstant: 18),
             loginLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             loginLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            loginLabel.trailingAnchor.constraint(equalTo: logoutButton.leadingAnchor),
 
             descriptionLabel.widthAnchor.constraint(equalToConstant: 400),
             descriptionLabel.heightAnchor.constraint(equalToConstant: 18),
             descriptionLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 8),
-            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16)
+            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            descriptionLabel.trailingAnchor.constraint(equalTo: logoutButton.leadingAnchor)
         ])
 
     }

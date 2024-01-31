@@ -7,9 +7,8 @@
 
 import Foundation
 
-private var getProfileImageURL = "\(defaultBaseURL)/me"
-
 final class ProfileImageService {
+    private let profileImageURL = "\(defaultBaseURL)/me"
     static let shared = ProfileImageService()
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
 
@@ -17,11 +16,13 @@ final class ProfileImageService {
     private var task: URLSessionTask?
     private let urlSession = URLSession.shared
 
+    private init() { }
+
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         let token = OAuth2TokenStorage.shared.token
         let url = NetworkClient().createURL(
-            url: getProfileImageURL,
+            url: profileImageURL,
             queryItems: [URLQueryItem(name: "username", value: username)])
 
         let request = NetworkClient().createRequestWithBearerAuth(
