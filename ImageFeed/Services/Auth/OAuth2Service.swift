@@ -8,6 +8,7 @@
 import Foundation
 
 final class OAuth2Service {
+    static let shared = OAuth2Service()
     private (set) var authToken: String? {
         get {
             return OAuth2TokenStorage.shared.token
@@ -38,8 +39,9 @@ final class OAuth2Service {
                 httpMethod: .POST
             )
             task = urlSession.objectTask(for: request,
-                                                completion: { (result: Result<OAuthTokenResponseBody,
+                                                completion: { [weak self] (result: Result<OAuthTokenResponseBody,
                                                                            Error>) in
+                guard let self = self else { return }
                 switch result {
                 case .success(let body):
                     let token = body.accessToken
