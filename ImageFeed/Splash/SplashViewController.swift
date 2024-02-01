@@ -54,7 +54,6 @@ final class SplashViewController: UIViewController {
                     UIBlockingProgressHUD.dismiss()
                     self?.switchToTabBarController()
                 case .failure(let error):
-                    UIBlockingProgressHUD.dismiss()
                     self?.showAlert()
                 }
             }
@@ -82,11 +81,18 @@ final class SplashViewController: UIViewController {
         )
 
         let action = UIAlertAction(
-            title: "OK", style: UIAlertAction.Style.default) { (_) in
+            title: "OK", style: UIAlertAction.Style.default) { [weak self] (_) in
+                guard let self = self else { return }
                 self.transitionToAuthViewController()
         }
         alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
+        self.present(
+            alert,
+            animated: true,
+            completion: {
+                UIBlockingProgressHUD.dismiss()
+            }
+        )
     }
 }
 
