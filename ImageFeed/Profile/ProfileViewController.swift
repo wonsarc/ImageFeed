@@ -6,28 +6,49 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
+    private var profileImageServiceObserver: NSObjectProtocol?
+
     // MARK: - View Life Cycles
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        logoImageView.layer.cornerRadius = logoImageView.frame.size.width / 2
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .ypBlack
         setupViews()
         setupConstraints()
+
+        if let profile = ProfileService.shared.profile {
+            updateProfileDetails(profile: profile)
+        }
+
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else {return}
+                self.updateAvatar()
+            }
+        updateAvatar()
     }
 
     // MARK: - Private Properties
     private lazy var logoImageView: UIImageView = {
         let logoImageView = UIImageView()
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.layer.cornerRadius = 16
-        logoImageView.image = UIImage(named: "PhotoProfile")
+        logoImageView.clipsToBounds = true
         return logoImageView
     }()
 
     private lazy var nameLabel: UILabel = {
         let nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.text = "Екатерина Новикова"
         nameLabel.textColor = .ypWhite
         nameLabel.font = .boldSystemFont(ofSize: 23)
         return nameLabel
@@ -36,7 +57,6 @@ final class ProfileViewController: UIViewController {
     private lazy var loginLabel: UILabel = {
         let loginLabel = UILabel()
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
-        loginLabel.text = "@ekaterina_nov"
         loginLabel.textColor = .ypGray
         loginLabel.font = .systemFont(ofSize: 13)
         return loginLabel
@@ -45,8 +65,8 @@ final class ProfileViewController: UIViewController {
     private lazy var descriptionLabel: UILabel = {
         let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.text = "Hello, world!"
         descriptionLabel.textColor = .ypWhite
+        descriptionLabel.numberOfLines = 0
         descriptionLabel.font = .systemFont(ofSize: 13)
         return descriptionLabel
     }()
@@ -87,18 +107,35 @@ final class ProfileViewController: UIViewController {
             nameLabel.heightAnchor.constraint(equalToConstant: 18),
             nameLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 8),
             nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            nameLabel.trailingAnchor.constraint(equalTo: logoutButton.leadingAnchor),
 
             loginLabel.widthAnchor.constraint(equalToConstant: 400),
             loginLabel.heightAnchor.constraint(equalToConstant: 18),
             loginLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             loginLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            loginLabel.trailingAnchor.constraint(equalTo: logoutButton.leadingAnchor),
 
             descriptionLabel.widthAnchor.constraint(equalToConstant: 400),
             descriptionLabel.heightAnchor.constraint(equalToConstant: 18),
             descriptionLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 8),
-            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16)
+            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            descriptionLabel.trailingAnchor.constraint(equalTo: logoutButton.leadingAnchor)
         ])
 
+    }
+
+    private func updateProfileDetails (profile: Profile) {
+        nameLabel.text = profile.name
+        loginLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
+    }
+
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        self.logoImageView.kf.setImage(with: url)
     }
 
     @objc

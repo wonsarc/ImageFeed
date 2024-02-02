@@ -15,7 +15,7 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet private weak var gradientView: UIView!
 
     // MARK: - Private Properties
-    private var isGradient: Bool = false
+    private var gradientLayer: CAGradientLayer = CAGradientLayer()
 
     // MARK: - Public Properties
     static let reuseIdentifier = "ImagesListCell"
@@ -28,13 +28,13 @@ final class ImagesListCell: UITableViewCell {
         dateLabel.text = date
         let likedButtonImage = isLiked ? "Active" : "No Active"
         likeButton.setImage(UIImage(named: likedButtonImage), for: .normal)
+        configGradientView()
     }
 
     // MARK: - Private Methods
     private func configGradientView() {
         gradientView.backgroundColor = .clear
-        let gradientLayer: CAGradientLayer = CAGradientLayer()
-        gradientLayer.frame = gradientView.bounds
+
         gradientLayer.colors = [
             UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 0.0).cgColor,
             UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 0.2).cgColor
@@ -47,10 +47,6 @@ final class ImagesListCell: UITableViewCell {
     // MARK: - Override Methods
     override func layoutSubviews() {
         super.layoutSubviews()
-
-        if !isGradient {
-            configGradientView()
-            isGradient = true
-        }
+        gradientLayer.frame = gradientView.bounds
     }
 }

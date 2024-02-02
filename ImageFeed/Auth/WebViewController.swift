@@ -8,14 +8,15 @@
 import UIKit
 import WebKit
 
-private let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
-
 protocol WebViewControllerDelegate: AnyObject {
     func webViewController(_ viewController: WebViewController, didAuthenticateWithCode code: String)
     func webViewControllerDidCancel(_ viewController: WebViewController)
 }
 
 final class WebViewController: UIViewController {
+    private let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
+    private var estimatedProgressObservation: NSKeyValueObservation?
+
     // MARK: - Properties
     weak var delegate: WebViewControllerDelegate?
 
@@ -54,39 +55,7 @@ final class WebViewController: UIViewController {
         setupConstraints()
         wkWebView.navigationDelegate = self
         loadWebView()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        wkWebView.addObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            options: .new,
-            context: nil
-        )
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        wkWebView.removeObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            context: nil
-        )
-    }
-
-    // MARK: - Func
-    override func observeValue(
-        forKeyPath keyPath: String?,
-        of object: Any?,
-        change: [NSKeyValueChangeKey: Any]?,
-        context: UnsafeMutableRawPointer?
-    ) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
+        createObserveEstimatedProgress()
     }
 
     // MARK: - Private Func
@@ -160,5 +129,15 @@ private extension WebViewController {
             uiProgressView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             uiProgressView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+    }
+
+    private func createObserveEstimatedProgress() {
+        estimatedProgressObservation = wkWebView.observe(
+            \.estimatedProgress,
+            options: [],
+             changeHandler: {[weak self] _, _ in
+                 guard let self = self else {return}
+                 self.updateProgress()
+             })
     }
 }
