@@ -22,6 +22,9 @@ final class OAuth2Service {
     private var task: URLSessionTask?
     private let urlSession = URLSession.shared
 
+    private init() {
+    }
+
     func fetchOAuthToken(
         _ code: String,
         completion: @escaping (Result<String, Error>) -> Void ) {
