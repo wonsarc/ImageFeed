@@ -9,7 +9,6 @@ import UIKit
 
 final class ImagesListViewController: UIViewController {
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    private let imagesListService = ImagesListService.shared
 
     // MARK: - IB Outlets
     @IBOutlet private weak var tableView: UITableView! {
@@ -93,18 +92,6 @@ extension ImagesListViewController: UITableViewDataSource {
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath
     ) {
-        if indexPath.row + 1 == imagesListService.photos.count { //todo check photos?
-            imagesListService.fetchPhotosNextPage { [ weak self ] result in
-                guard let self = self else { return }
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let photosList):
-                        print(photosList.count)
-                    case.failure(let error):
-                        print(error)
-                    }
-                }
-            }
-        }
+
     }
 }
