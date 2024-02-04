@@ -8,12 +8,23 @@
 import UIKit
 import Kingfisher
 
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListCell: UITableViewCell {
+    weak var delegate: ImagesListCellDelegate?
+
     // MARK: - IB Outlets
     @IBOutlet private weak var cellView: UIImageView!
     @IBOutlet private weak var likeButton: UIButton!
     @IBOutlet private weak var dateLabel: UILabel!
     @IBOutlet private weak var gradientView: UIView!
+
+    // MARK: - IB Actions
+    @IBAction func likeButtonClicked(_ sender: Any) {
+        delegate?.imageListCellDidTapLike(self)
+    }
 
     // MARK: - Private Properties
     private var gradientLayer: CAGradientLayer = CAGradientLayer()
@@ -34,6 +45,11 @@ final class ImagesListCell: UITableViewCell {
         let likedButtonImage = isLiked ? "Active" : "No Active"
         likeButton.setImage(UIImage(named: likedButtonImage), for: .normal)
         configGradientView()
+    }
+
+    func setIsLiked(isLiked: Bool) {
+        let likedButtonImage = isLiked ? "Active" : "No Active"
+        likeButton.setImage(UIImage(named: likedButtonImage), for: .normal)
     }
 
     // MARK: - Private Methods

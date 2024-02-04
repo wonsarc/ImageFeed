@@ -25,10 +25,44 @@ final class ImagesListService {
         if task != nil { task?.cancel() }
 
         let nextPage = lastLoadedPage + 1
-        let url = createURL(nextPage: nextPage)
-        let request = createRequest(url: url)
+        let url = networkClient.createURL(
+            url: photosURL,
+            queryItems: [
+                URLQueryItem(name: "page", value: String(nextPage)),
+                URLQueryItem(name: "per_page", value: String(10))
+            ])
+        let request = networkClient.createRequestWithBearerAuth(
+            url: url,
+            httpMethod: .GET,
+            token: OAuth2TokenStorage.shared.token
+        )
+        task = createPhotosTask(request: request, nextPage: nextPage)
+        task?.resume()
+    }
 
-        task = createTask(request: request, nextPage: nextPage)
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        let likeURL = "\(defaultBaseURL)/photos/\(photoId)/like"
+        let url = networkClient.createURL(
+            url: likeURL,
+            queryItems: [])
+        let request = networkClient.createRequestWithBearerAuth(
+            url: url,
+            httpMethod: isLike ? .DELETE : .POST,
+            token: OAuth2TokenStorage.shared.token
+        )
+
+        task = urlSession.dataTask(with: request, completionHandler: { _, response, error in
+            DispatchQueue.main.async {
+                if let response = response,
+                   let statusCode = (response as? HTTPURLResponse)?.statusCode {
+                    if 200 ..< 300 ~= statusCode {
+                        completion(.success(self.changeLikeed(photoId: photoId)))
+                    } else {
+                        completion(.failure(error ?? NetworkError.urlSessionError))
+                    }
+                }
+            }
+        })
         task?.resume()
     }
 
@@ -42,7 +76,23 @@ final class ImagesListService {
             )
     }
 
-    private func createTask(request: URLRequest, nextPage: Int) -> URLSessionTask? {
+    private func changeLikeed(photoId: String) {
+        if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+            let photo = self.photos[index]
+            let newPhoto = Photo(
+                      id: photo.id,
+                      size: photo.size,
+                      createdAt: photo.createdAt,
+                      welcomeDescription: photo.welcomeDescription,
+                      thumbImageURL: photo.thumbImageURL,
+                      largeImageURL: photo.largeImageURL,
+                      isLiked: !photo.isLiked
+                  )
+            self.photos[index] = newPhoto
+        }
+    }
+
+    private func createPhotosTask(request: URLRequest, nextPage: Int) -> URLSessionTask? {
         return urlSession.objectTask(
             for: request,
             completion: { [weak self ] (result: Result<[PhotoResult], Error>) in
@@ -65,7 +115,7 @@ final class ImagesListService {
                         self.lastLoadedPage = nextPage
                         self.createNotification()
                     case .failure(let error):
-                        print(error, "CASE ERROR urlSession.objectTask")
+                        print(error)
                     }
                 }
             })
@@ -76,22 +126,5 @@ final class ImagesListService {
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         let date = formatter.date(from: stringDate)
         return date
-    }
-
-    private func createURL(nextPage: Int) -> URL {
-        return networkClient.createURL(
-            url: photosURL,
-            queryItems: [
-                URLQueryItem(name: "page", value: String(nextPage)),
-                URLQueryItem(name: "per_page", value: String(10))
-            ])
-    }
-
-    private func createRequest(url: URL) -> URLRequest {
-        return networkClient.createRequestWithBearerAuth(
-            url: url,
-            httpMethod: .GET,
-            token: OAuth2TokenStorage.shared.token
-        )
     }
 }

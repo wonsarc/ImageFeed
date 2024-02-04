@@ -135,7 +135,10 @@ final class ProfileViewController: UIViewController {
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let url = URL(string: profileImageURL)
         else { return }
-        self.logoImageView.kf.setImage(with: url)
+        self.logoImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "User")
+        )
     }
 
     @objc

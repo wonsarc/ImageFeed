@@ -37,7 +37,7 @@ final class ImagesListViewController: UIViewController {
         if segue.identifier == showSingleImageSegueIdentifier {
             guard let viewController = segue.destination as? SingleImageViewController else {return}
             guard let indexPath = sender as? IndexPath else {return}
-            viewController.image = UIImage(named: "Card") //todo подумать откуда тянуть image
+            viewController.image = UIImage(named: "Card") // todo подумать откуда тянуть image
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -89,6 +89,30 @@ extension ImagesListViewController: UITableViewDelegate {
     }
 }
 
+// MARK: - ImagesListCellDelegate
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+
+        UIBlockingProgressHUD.animate()
+
+        imagesListService.changeLike(
+            photoId: photo.id,
+            isLike: photo.isLiked) { result in
+                switch result {
+                case .success:
+                    self.photos = self.imagesListService.photos
+                    cell.setIsLiked(isLiked: self.photos[indexPath.row].isLiked)
+                    UIBlockingProgressHUD.dismiss()
+                case.failure(let error):
+                    UIBlockingProgressHUD.dismiss()
+                    print(error)
+                }
+            }
+    }
+}
+
 // MARK: - UITableViewDataSource
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -100,6 +124,7 @@ extension ImagesListViewController: UITableViewDataSource {
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
+        imageListCell.delegate = self
         let photo = photos[indexPath.row]
         imageListCell.configureCell(
             imageURL: URL(string: photo.thumbImageURL),
