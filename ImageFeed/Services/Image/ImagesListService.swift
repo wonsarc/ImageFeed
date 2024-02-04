@@ -73,8 +73,9 @@ final class ImagesListService {
 
     private func convertDate(stringDate: String) -> Date? {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd’T’HH:mm:ssZ"
-        return stringDate == "" ? Date() : formatter.date(from: stringDate)
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        let date = formatter.date(from: stringDate)
+        return date
     }
 
     private func createURL(nextPage: Int) -> URL {

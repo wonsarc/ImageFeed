@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ImagesListCell: UITableViewCell {
     // MARK: - IB Outlets
@@ -21,10 +22,14 @@ final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
 
     // MARK: - Public Methods
-    func configureCell(image: UIImage?, date: String, isLiked: Bool) {
+    func configureCell(imageURL: URL?, date: String, isLiked: Bool) {
         cellView.layer.cornerRadius = 16
         cellView.layer.masksToBounds = true
-        cellView.image = image
+        cellView.kf.indicatorType = .activity
+        cellView.kf.setImage(
+            with: imageURL,
+        placeholder: UIImage(named: "Card")
+        )
         dateLabel.text = date
         let likedButtonImage = isLiked ? "Active" : "No Active"
         likeButton.setImage(UIImage(named: likedButtonImage), for: .normal)
