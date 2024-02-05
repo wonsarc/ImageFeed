@@ -37,7 +37,8 @@ final class ImagesListViewController: UIViewController {
         if segue.identifier == showSingleImageSegueIdentifier {
             guard let viewController = segue.destination as? SingleImageViewController else {return}
             guard let indexPath = sender as? IndexPath else {return}
-            viewController.image = UIImage(named: "Card") // todo подумать откуда тянуть image
+            let photo = photos[indexPath.row]
+            viewController.imageURL = photo.largeImageURL
         } else {
             super.prepare(for: segue, sender: sender)
         }

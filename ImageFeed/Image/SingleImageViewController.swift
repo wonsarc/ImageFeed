@@ -6,14 +6,13 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
     // MARK: - Public Properties
-    var image: UIImage? {
+    var imageURL: String? {
         didSet {
-            guard isViewLoaded else { return }
-            photoSingleImageView.image = image
-            rescaleAndCenterImageInScrollView(image: image ?? UIImage())
+            uploadImage()
         }
     }
 
@@ -30,8 +29,10 @@ final class SingleImageViewController: UIViewController {
     }
 
     @IBAction func didTapShareButton(_ sender: Any) {
-        present(UIActivityViewController(activityItems: [image as Any], applicationActivities: nil),
-                animated: true)
+        present(UIActivityViewController(
+            activityItems: [photoSingleImageView.image as Any],
+            applicationActivities: nil
+        ), animated: true)
     }
 
     // MARK: - View Life Cycles
@@ -39,8 +40,7 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLoad()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
-        photoSingleImageView.image = image
-        rescaleAndCenterImageInScrollView(image: image ?? UIImage())
+        uploadImage()
     }
 
     // MARK: - Private func
@@ -59,6 +59,25 @@ final class SingleImageViewController: UIViewController {
         let sideX = (newContentSize.width - visibleRectSize.width) / 2
         let sideY = (newContentSize.height - visibleRectSize.height) / 2
         scrollView.setContentOffset(CGPoint(x: sideX, y: sideY), animated: false)
+    }
+
+    private func uploadImage() {
+        guard isViewLoaded else { return }
+        guard let imageURL = imageURL else { return }
+        UIBlockingProgressHUD.animate()
+        photoSingleImageView.kf.indicatorType = .activity
+        photoSingleImageView.kf.setImage(
+            with: URL(string: imageURL)
+        ) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let imageResult):
+                UIBlockingProgressHUD.dismiss()
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+            }
+        }
     }
 }
 
