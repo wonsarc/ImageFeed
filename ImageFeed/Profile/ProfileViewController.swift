@@ -143,5 +143,8 @@ final class ProfileViewController: UIViewController {
 
     @objc
     private func didTapLogoutButton() {
+        OAuth2TokenStorage.shared.deleteToken()
+        WebViewController.cleanCookie()
+        self.present(SplashViewController(), animated: true)
     }
 }

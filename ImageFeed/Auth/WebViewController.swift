@@ -58,6 +58,16 @@ final class WebViewController: UIViewController {
         createObserveEstimatedProgress()
     }
 
+    // MARK: - Static func
+    static func cleanCookie() {
+       HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+       WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+          records.forEach { record in
+             WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+          }
+       }
+    }
+
     // MARK: - Private Func
     @objc private func didTapBackButton() {
         delegate?.webViewControllerDidCancel(self)
