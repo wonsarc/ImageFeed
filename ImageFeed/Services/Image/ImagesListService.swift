@@ -16,6 +16,7 @@ final class ImagesListService {
     private let networkClient = NetworkClient()
     private let urlSession = URLSession.shared
     private let dateFormatter = ISO8601DateFormatter()
+    private let perPage = 10
     private var lastLoadedPage = 0
     private (set) var photos: [Photo] = []
     private var task: URLSessionTask?
@@ -24,8 +25,11 @@ final class ImagesListService {
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
         if task != nil {
-            task?.cancel()
-            return
+            if lastLoadedPage == photos.count / perPage {
+                task?.cancel()
+            } else {
+                return
+            }
         }
 
         let nextPage = lastLoadedPage + 1
@@ -33,7 +37,7 @@ final class ImagesListService {
             url: photosURL,
             queryItems: [
                 URLQueryItem(name: "page", value: String(nextPage)),
-                URLQueryItem(name: "per_page", value: String(10))
+                URLQueryItem(name: "per_page", value: String(perPage))
             ])
         let request = networkClient.createRequestWithBearerAuth(
             url: url,
