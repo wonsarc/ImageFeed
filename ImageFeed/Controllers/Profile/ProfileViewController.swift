@@ -10,17 +10,21 @@ import Kingfisher
 
 final class ProfileViewController: UIViewController {
     private var profileImageServiceObserver: NSObjectProtocol?
+    private var gradientAnimationHelper = GradientAnimationHelper()
+    var animationLayers = Set<CALayer>()
 
     // MARK: - View Life Cycles
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         logoImageView.layer.cornerRadius = logoImageView.frame.size.width / 2
     }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
         setupViews()
         setupConstraints()
+        setupGradientAnimation()
 
         if let profile = ProfileService.shared.profile {
             updateProfileDetails(profile: profile)
@@ -35,6 +39,7 @@ final class ProfileViewController: UIViewController {
                 guard let self = self else {return}
                 self.updateAvatar()
             }
+        animationLayers.forEach { $0.removeFromSuperlayer() }
         updateAvatar()
     }
 
@@ -121,7 +126,6 @@ final class ProfileViewController: UIViewController {
             descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             descriptionLabel.trailingAnchor.constraint(equalTo: logoutButton.leadingAnchor)
         ])
-
     }
 
     private func updateProfileDetails (profile: Profile) {
@@ -154,7 +158,7 @@ final class ProfileViewController: UIViewController {
         )
         let actionYes = UIAlertAction(
             title: "Да", style: UIAlertAction.Style.default) { [weak self] (_) in
-                guard let self = self else { return }
+                guard self != nil else { return }
                 OAuth2TokenStorage.shared.deleteToken()
                 WebViewController.cleanCookie()
                 guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
@@ -172,5 +176,41 @@ final class ProfileViewController: UIViewController {
                 UIBlockingProgressHUD.dismiss()
             }
         )
+    }
+
+    private func setupGradientAnimation() {
+        let animation = gradientAnimationHelper.animation
+
+        let logoImageViewGradient = gradientAnimationHelper.addGradient(
+            size: CGSize(width: 70, height: 70),
+            cornerRadius: 35,
+            view: logoImageView
+        )
+        logoImageViewGradient.add(animation, forKey: "locationsChange")
+        animationLayers.insert(logoImageViewGradient)
+
+        let nameLabelGradient = gradientAnimationHelper.addGradient(
+            size: CGSize(width: 250, height: 18),
+            cornerRadius: 10,
+            view: nameLabel
+        )
+        nameLabelGradient.add(animation, forKey: "locationsChange")
+        animationLayers.insert(nameLabelGradient)
+
+        let loginLabelGradient = gradientAnimationHelper.addGradient(
+            size: CGSize(width: 200, height: 18),
+            cornerRadius: 10,
+            view: loginLabel
+        )
+        loginLabelGradient.add(animation, forKey: "locationsChange")
+        animationLayers.insert(loginLabelGradient)
+
+        let descriptionLabelGradient = gradientAnimationHelper.addGradient(
+            size: CGSize(width: 150, height: 18),
+            cornerRadius: 10,
+            view: descriptionLabel
+        )
+        descriptionLabelGradient.add(animation, forKey: "locationsChange")
+        animationLayers.insert(descriptionLabelGradient)
     }
 }

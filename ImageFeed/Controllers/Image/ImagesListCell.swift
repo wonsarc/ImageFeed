@@ -15,6 +15,27 @@ protocol ImagesListCellDelegate: AnyObject {
 final class ImagesListCell: UITableViewCell {
     weak var delegate: ImagesListCellDelegate?
 
+    var imageState: FeedCellImageStateEnum = .loading {
+        didSet {
+            switch imageState {
+            case .loading:
+                let animation = gradientAnimationHelper.animation
+                let cellViewGradient = gradientAnimationHelper.addGradient(
+                    size: cellView.bounds.size,
+                    cornerRadius: 16,
+                    view: cellView
+                )
+                cellViewGradient.add(animation, forKey: "locationsChange")
+                animationLayers.insert(cellViewGradient)
+            case .error:
+                print("error")
+            case .finished(let image):
+                cellView.image = image
+                animationLayers.forEach { $0.removeFromSuperlayer() }
+            }
+        }
+    }
+
     // MARK: - IB Outlets
     @IBOutlet private weak var cellView: UIImageView!
     @IBOutlet private weak var likeButton: UIButton!
@@ -28,19 +49,17 @@ final class ImagesListCell: UITableViewCell {
 
     // MARK: - Private Properties
     private var gradientLayer: CAGradientLayer = CAGradientLayer()
+    private var gradientAnimationHelper = GradientAnimationHelper()
 
     // MARK: - Public Properties
     static let reuseIdentifier = "ImagesListCell"
+    var animationLayers = Set<CALayer>()
 
     // MARK: - Public Methods
-    func configureCell(imageURL: URL?, date: String, isLiked: Bool) {
+    func configureCell(date: String, isLiked: Bool) {
         cellView.layer.cornerRadius = 16
+        print(cellView.frame)
         cellView.layer.masksToBounds = true
-        cellView.kf.indicatorType = .activity
-        cellView.kf.setImage(
-            with: imageURL,
-        placeholder: UIImage(named: "Card")
-        )
         dateLabel.text = date
         let likedButtonImage = isLiked ? "Active" : "No Active"
         likeButton.setImage(UIImage(named: likedButtonImage), for: .normal)

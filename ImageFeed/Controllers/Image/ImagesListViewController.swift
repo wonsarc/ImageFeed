@@ -125,7 +125,22 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         imageListCell.delegate = self
+        imageListCell.imageState = .loading
+        var imageView = UIImageView()
         let photo = photos[indexPath.row]
+        let imageURL = URL(string: photo.thumbImageURL)
+
+        DispatchQueue.main.async {
+            imageView.kf.setImage(with: imageURL, completionHandler: { result in
+                switch result {
+                case .success(let download):
+                    imageListCell.imageState = .finished(download.image)
+                case .failure:
+                    imageListCell.imageState = .error
+                }
+            })
+        }
+
         let date: String = {
             let date = photo.createdAt
             if let date = date {
@@ -135,10 +150,10 @@ extension ImagesListViewController: UITableViewDataSource {
             }
     }()
         imageListCell.configureCell(
-            imageURL: URL(string: photo.thumbImageURL),
             date: date,
             isLiked: photo.isLiked
         )
+
         return imageListCell
     }
 
