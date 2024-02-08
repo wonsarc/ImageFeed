@@ -23,7 +23,10 @@ final class ImagesListService {
     // MARK: - Public Func
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
-        if task != nil { task?.cancel() }
+        if task != nil {
+            task?.cancel()
+            return
+        }
 
         let nextPage = lastLoadedPage + 1
         let url = networkClient.createURL(
