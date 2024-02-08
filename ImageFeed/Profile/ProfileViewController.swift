@@ -143,9 +143,34 @@ final class ProfileViewController: UIViewController {
 
     @objc
     private func didTapLogoutButton() {
-        OAuth2TokenStorage.shared.deleteToken()
-        WebViewController.cleanCookie()
-        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-        window.rootViewController = SplashViewController()
+        showAlert()
+    }
+
+    private func showAlert() {
+        let alert = UIAlertController(
+            title: "Пока, Пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: UIAlertController.Style.alert
+        )
+        let actionYes = UIAlertAction(
+            title: "Да", style: UIAlertAction.Style.default) { [weak self] (_) in
+                guard let self = self else { return }
+                OAuth2TokenStorage.shared.deleteToken()
+                WebViewController.cleanCookie()
+                guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+                window.rootViewController = SplashViewController()
+        }
+        let actionNo = UIAlertAction(
+            title: "Нет", style: UIAlertAction.Style.default)
+
+        alert.addAction(actionYes)
+        alert.addAction(actionNo)
+        self.present(
+            alert,
+            animated: true,
+            completion: {
+                UIBlockingProgressHUD.dismiss()
+            }
+        )
     }
 }
