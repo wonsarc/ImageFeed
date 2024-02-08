@@ -22,15 +22,15 @@ final class ImagesListViewController: UIViewController {
 
     // MARK: - Private Properties
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    private var imagesListServiceObserver: NSObjectProtocol?
     private let imagesListService = ImagesListService()
-    private var photos: [Photo] = []
-    private lazy var dateFormatter: DateFormatter = {
+    private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .none
         return formatter
     }()
+    private var imagesListServiceObserver: NSObjectProtocol?
+    private var photos: [Photo] = []
 
     // MARK: - View Life Cycles
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -126,9 +126,17 @@ extension ImagesListViewController: UITableViewDataSource {
         }
         imageListCell.delegate = self
         let photo = photos[indexPath.row]
+        let date: String = {
+            let date = photo.createdAt
+            if let date = date {
+                return dateFormatter.string(from: date)
+            } else {
+                return ""
+            }
+    }()
         imageListCell.configureCell(
             imageURL: URL(string: photo.thumbImageURL),
-            date: dateFormatter.string(from: photo.createdAt ?? Date()),
+            date: date,
             isLiked: photo.isLiked
         )
         return imageListCell

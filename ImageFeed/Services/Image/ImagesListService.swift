@@ -15,6 +15,7 @@ final class ImagesListService {
     private let photosURL = "\(defaultBaseURL)/photos"
     private let networkClient = NetworkClient()
     private let urlSession = URLSession.shared
+    private let dateFormatter = ISO8601DateFormatter()
     private var lastLoadedPage = 0
     private (set) var photos: [Photo] = []
     private var task: URLSessionTask?
@@ -104,7 +105,7 @@ final class ImagesListService {
                             let photo = Photo(
                                 id: photo.id ?? "",
                                 size: CGSize(width: photo.width ?? 0, height: photo.height ?? 0),
-                                createdAt: self.convertDate(stringDate: photo.createdAt ?? ""),
+                                createdAt: self.dateFormatter.date(from: photo.createdAt ?? ""),
                                 welcomeDescription: photo.description ?? "",
                                 thumbImageURL: photo.urls?.thumb ?? "",
                                 largeImageURL: photo.urls?.full ?? "",
@@ -119,12 +120,5 @@ final class ImagesListService {
                     }
                 }
             })
-    }
-
-    private func convertDate(stringDate: String) -> Date? {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        let date = formatter.date(from: stringDate)
-        return date
     }
 }
