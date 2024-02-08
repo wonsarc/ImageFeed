@@ -12,7 +12,7 @@ final class SingleImageViewController: UIViewController {
     // MARK: - Public Properties
     var imageURL: String? {
         didSet {
-            uploadImage()
+            downloadImage()
         }
     }
 
@@ -40,7 +40,7 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLoad()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
-        uploadImage()
+        downloadImage()
     }
 
     // MARK: - Private func
@@ -61,7 +61,7 @@ final class SingleImageViewController: UIViewController {
         scrollView.setContentOffset(CGPoint(x: sideX, y: sideY), animated: false)
     }
 
-    private func uploadImage() {
+    private func downloadImage() {
         guard isViewLoaded else { return }
         guard let imageURL = imageURL else { return }
         UIBlockingProgressHUD.animate()

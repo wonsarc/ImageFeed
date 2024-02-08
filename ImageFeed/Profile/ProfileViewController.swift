@@ -145,6 +145,7 @@ final class ProfileViewController: UIViewController {
     private func didTapLogoutButton() {
         OAuth2TokenStorage.shared.deleteToken()
         WebViewController.cleanCookie()
-        self.present(SplashViewController(), animated: true)
+        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+        window.rootViewController = SplashViewController()
     }
 }
