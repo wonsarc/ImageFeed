@@ -15,13 +15,14 @@ protocol ImagesListCellDelegate: AnyObject {
 final class ImagesListCell: UITableViewCell {
     weak var delegate: ImagesListCellDelegate?
 
-    var imageState: FeedCellImageStateEnum = .loading {
+    var imageState: FeedCellImageStateEnum = .loading(nil) {
         didSet {
             switch imageState {
-            case .loading:
+            case .loading(let size):
                 let animation = gradientAnimationHelper.animation
+                guard let size = size else { return }
                 let cellViewGradient = gradientAnimationHelper.addGradient(
-                    size: cellView.bounds.size,
+                    size: size,
                     cornerRadius: 16,
                     view: cellView
                 )

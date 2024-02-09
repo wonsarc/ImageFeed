@@ -125,9 +125,9 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         imageListCell.delegate = self
-        imageListCell.imageState = .loading
         var imageView = UIImageView()
         let photo = photos[indexPath.row]
+        imageListCell.imageState = .loading(CGSize(width: photo.size.width, height: photo.size.height))
         let imageURL = URL(string: photo.thumbImageURL)
 
         DispatchQueue.main.async {
