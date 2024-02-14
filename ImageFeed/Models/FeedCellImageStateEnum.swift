@@ -8,7 +8,7 @@
 import UIKit
 
 enum FeedCellImageStateEnum {
-    case loading(CGSize?)
+    case loading
     case error
     case finished(UIImage)
 }

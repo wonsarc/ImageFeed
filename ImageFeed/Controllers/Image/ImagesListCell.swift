@@ -15,24 +15,17 @@ protocol ImagesListCellDelegate: AnyObject {
 final class ImagesListCell: UITableViewCell {
     weak var delegate: ImagesListCellDelegate?
 
-    var imageState: FeedCellImageStateEnum = .loading(nil) {
+    var imageState: FeedCellImageStateEnum = .loading {
         didSet {
             switch imageState {
-            case .loading(let size):
-                let animation = gradientAnimationHelper.animation
-                guard let size = size else { return }
-                let cellViewGradient = gradientAnimationHelper.addGradient(
-                    size: size,
-                    cornerRadius: 16,
-                    view: cellView
-                )
-                cellViewGradient.add(animation, forKey: "locationsChange")
-                animationLayers.insert(cellViewGradient)
+            case .loading:
+                animationLayers.insert(gradientLayer)
             case .error:
                 print("error")
             case .finished(let image):
                 cellView.image = image
                 animationLayers.forEach { $0.removeFromSuperlayer() }
+                animationLayers.removeAll()
             }
         }
     }
@@ -59,15 +52,13 @@ final class ImagesListCell: UITableViewCell {
     // MARK: - Public Methods
     func configureCell(date: String, isLiked: Bool) {
         cellView.layer.cornerRadius = 16
-        print(cellView.frame)
         cellView.layer.masksToBounds = true
         dateLabel.text = date
-        let likedButtonImage = isLiked ? "Active" : "No Active"
-        likeButton.setImage(UIImage(named: likedButtonImage), for: .normal)
+        setIsLiked(isLiked)
         configGradientView()
     }
 
-    func setIsLiked(isLiked: Bool) {
+    func setIsLiked(_ isLiked: Bool) {
         let likedButtonImage = isLiked ? "Active" : "No Active"
         likeButton.setImage(UIImage(named: likedButtonImage), for: .normal)
     }
@@ -89,5 +80,16 @@ final class ImagesListCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         gradientLayer.frame = gradientView.bounds
+
+        if !animationLayers.isEmpty {
+            let animation = gradientAnimationHelper.animation
+            let cellViewGradient = gradientAnimationHelper.addGradient(
+                size: cellView.bounds.size,
+                cornerRadius: 16,
+                view: cellView
+            )
+            cellViewGradient.add(animation, forKey: "locationsChange")
+            animationLayers.insert(cellViewGradient)
+        }
     }
 }

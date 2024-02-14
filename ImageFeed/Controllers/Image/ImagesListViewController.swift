@@ -79,13 +79,11 @@ extension ImagesListViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let photo = photos[indexPath.row]
-        let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
-        let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
-        let imageWidth = photo.size.width
-        let scale = imageViewWidth / imageWidth
-        let cellHeight = photo.size.height * scale + imageInsets.top + imageInsets.bottom
-        return cellHeight
+
+        let cell = photos[indexPath.row]
+        let imageSize = CGSize(width: cell.size.width, height: cell.size.height)
+        let aspectRatio = imageSize.width / imageSize.height
+        return tableView.frame.width / aspectRatio
     }
 }
 
@@ -103,11 +101,10 @@ extension ImagesListViewController: ImagesListCellDelegate {
                 switch result {
                 case .success:
                     self.photos = self.imagesListService.photos
-                    cell.setIsLiked(isLiked: self.photos[indexPath.row].isLiked)
+                    cell.setIsLiked(self.photos[indexPath.row].isLiked)
                     UIBlockingProgressHUD.dismiss()
-                case.failure(let error):
+                case.failure:
                     UIBlockingProgressHUD.dismiss()
-                    print(error)
                 }
             }
     }
@@ -125,9 +122,9 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         imageListCell.delegate = self
-        var imageView = UIImageView()
+        let imageView = UIImageView()
         let photo = photos[indexPath.row]
-        imageListCell.imageState = .loading(CGSize(width: photo.size.width, height: photo.size.height))
+        imageListCell.imageState = .loading
         let imageURL = URL(string: photo.thumbImageURL)
 
         DispatchQueue.main.async {
