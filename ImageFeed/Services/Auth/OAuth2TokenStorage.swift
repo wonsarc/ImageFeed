@@ -25,6 +25,10 @@ final class OAuth2TokenStorage {
         }
     }
 
+    func deleteToken() {
+        keychainWrapper.removeObject(forKey: Keys.authToken.rawValue)
+    }
+
     private enum Keys: String {
         case authToken
     }

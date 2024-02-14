@@ -52,10 +52,10 @@ final class SplashViewController: UIViewController {
             guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
-                case .success(let body):
+                case .success:
                     UIBlockingProgressHUD.dismiss()
                     self.switchToTabBarController()
-                case .failure(let error):
+                case .failure:
                     self.showAlert()
                 }
             }
@@ -66,9 +66,9 @@ final class SplashViewController: UIViewController {
                 guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
-                case .success(let body):
-                    print(body)
-                case .failure(let error):
+                case .success:
+                    break
+                case .failure:
                     self.showAlert()
                 }
             }

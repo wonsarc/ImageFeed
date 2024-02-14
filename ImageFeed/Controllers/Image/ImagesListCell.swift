@@ -6,29 +6,61 @@
 //
 
 import UIKit
+import Kingfisher
+
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
 
 final class ImagesListCell: UITableViewCell {
+    weak var delegate: ImagesListCellDelegate?
+
+    var imageState: FeedCellImageStateEnum = .loading {
+        didSet {
+            switch imageState {
+            case .loading:
+                animationLayers.insert(gradientLayer)
+            case .error:
+                print("error")
+            case .finished(let image):
+                cellView.image = image
+                animationLayers.forEach { $0.removeFromSuperlayer() }
+                animationLayers.removeAll()
+            }
+        }
+    }
+
     // MARK: - IB Outlets
     @IBOutlet private weak var cellView: UIImageView!
     @IBOutlet private weak var likeButton: UIButton!
     @IBOutlet private weak var dateLabel: UILabel!
     @IBOutlet private weak var gradientView: UIView!
 
+    // MARK: - IB Actions
+    @IBAction private func likeButtonClicked(_ sender: Any) {
+        delegate?.imageListCellDidTapLike(self)
+    }
+
     // MARK: - Private Properties
     private var gradientLayer: CAGradientLayer = CAGradientLayer()
+    private var gradientAnimationHelper = GradientAnimationHelper()
 
     // MARK: - Public Properties
     static let reuseIdentifier = "ImagesListCell"
+    var animationLayers = Set<CALayer>()
 
     // MARK: - Public Methods
-    func configureCell(image: UIImage?, date: String, isLiked: Bool) {
+    func configureCell(date: String, isLiked: Bool) {
         cellView.layer.cornerRadius = 16
         cellView.layer.masksToBounds = true
-        cellView.image = image
         dateLabel.text = date
+        setIsLiked(isLiked)
+        configGradientView()
+    }
+
+    func setIsLiked(_ isLiked: Bool) {
         let likedButtonImage = isLiked ? "Active" : "No Active"
         likeButton.setImage(UIImage(named: likedButtonImage), for: .normal)
-        configGradientView()
     }
 
     // MARK: - Private Methods
@@ -48,5 +80,16 @@ final class ImagesListCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         gradientLayer.frame = gradientView.bounds
+
+        if !animationLayers.isEmpty {
+            let animation = gradientAnimationHelper.animation
+            let cellViewGradient = gradientAnimationHelper.addGradient(
+                size: cellView.bounds.size,
+                cornerRadius: 16,
+                view: cellView
+            )
+            cellViewGradient.add(animation, forKey: "locationsChange")
+            animationLayers.insert(cellViewGradient)
+        }
     }
 }
