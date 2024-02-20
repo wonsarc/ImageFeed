@@ -8,7 +8,7 @@
 import Foundation
 
 final class ProfileImageService {
-    private let profileImageURL = "\(defaultBaseURL)/me"
+    private let profileImageURL = "\(AuthConfiguration.standard.defaultBaseURL)/me"
     static let shared = ProfileImageService()
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
 

@@ -16,18 +16,19 @@ protocol WebViewPresenterProtocol {
 
 final class WebViewPresenter: WebViewPresenterProtocol {
     // MARK: - Properties
-    private let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
     weak var view: WebViewControllerProtocol?
+    private let authConfiguration = AuthConfiguration.standard
 
     // MARK: - Public Methods
     func viewDidLoad() {
-        var urlComponents = URLComponents(string: unsplashAuthorizeURLString)
+        var urlComponents = URLComponents(string: authConfiguration.authURLString)
         urlComponents?.queryItems = [
-            URLQueryItem(name: "client_id", value: accessKey),
-            URLQueryItem(name: "redirect_uri", value: redirectURI),
+            URLQueryItem(name: "client_id", value: authConfiguration.accessKey),
+            URLQueryItem(name: "redirect_uri", value: authConfiguration.redirectURI),
             URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: accessScope)
+            URLQueryItem(name: "scope", value: authConfiguration.accessScope)
         ]
+
         if let url = urlComponents?.url {
             let request = URLRequest(url: url)
             view?.load(request: request)

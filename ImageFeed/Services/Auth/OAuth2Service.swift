@@ -9,6 +9,7 @@ import Foundation
 
 final class OAuth2Service {
     static let shared = OAuth2Service()
+    private let authConfiguration = AuthConfiguration.standard
     private (set) var authToken: String? {
         get {
             return OAuth2TokenStorage.shared.token
@@ -59,9 +60,9 @@ final class OAuth2Service {
 
     private func createQueryItems(_ code: String) -> [URLQueryItem] {
         let queryItemsList = [
-            URLQueryItem(name: "client_id", value: accessKey),
-            URLQueryItem(name: "client_secret", value: secretKey),
-            URLQueryItem(name: "redirect_uri", value: redirectURI),
+            URLQueryItem(name: "client_id", value: authConfiguration.accessKey),
+            URLQueryItem(name: "client_secret", value: authConfiguration.secretKey),
+            URLQueryItem(name: "redirect_uri", value: authConfiguration.redirectURI),
             URLQueryItem(name: "code", value: code),
             URLQueryItem(name: "grant_type", value: "authorization_code")
         ]

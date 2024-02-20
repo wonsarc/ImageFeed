@@ -8,7 +8,7 @@
 import Foundation
 
 final class ProfileService {
-    private let profileMeURL = URL(string: "\(defaultBaseURL)/me")!
+    private let profileMeURL = URL(string: "\(AuthConfiguration.standard.defaultBaseURL)/me")!
     static let shared = ProfileService()
 
     private var lastToken: String?

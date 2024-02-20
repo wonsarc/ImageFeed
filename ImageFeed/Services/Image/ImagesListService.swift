@@ -12,7 +12,7 @@ final class ImagesListService {
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
 
     // MARK: - Private Properties
-    private let photosURL = "\(defaultBaseURL)/photos"
+    private let photosURL = "\(AuthConfiguration.standard.defaultBaseURL)/photos"
     private let networkClient = NetworkClient()
     private let urlSession = URLSession.shared
     private let dateFormatter = ISO8601DateFormatter()
@@ -49,7 +49,7 @@ final class ImagesListService {
     }
 
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
-        let likeURL = "\(defaultBaseURL)/photos/\(photoId)/like"
+        let likeURL = "\(AuthConfiguration.standard.defaultBaseURL)/photos/\(photoId)/like"
         let url = networkClient.createURL(
             url: likeURL,
             queryItems: [])
