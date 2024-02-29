@@ -13,8 +13,16 @@ protocol ImagesListCellDelegate: AnyObject {
 }
 
 final class ImagesListCell: UITableViewCell {
-    weak var delegate: ImagesListCellDelegate?
+    // MARK: - IB Outlets
+    @IBOutlet private weak var cellView: UIImageView!
+    @IBOutlet private weak var likeButton: UIButton!
+    @IBOutlet private weak var dateLabel: UILabel!
+    @IBOutlet private weak var gradientView: UIView!
 
+    // MARK: - Public Properties
+    weak var delegate: ImagesListCellDelegate?
+    static let reuseIdentifier = "ImagesListCell"
+    var animationLayers = Set<CALayer>()
     var imageState: FeedCellImageStateEnum = .loading {
         didSet {
             switch imageState {
@@ -30,24 +38,36 @@ final class ImagesListCell: UITableViewCell {
         }
     }
 
-    // MARK: - IB Outlets
-    @IBOutlet private weak var cellView: UIImageView!
-    @IBOutlet private weak var likeButton: UIButton!
-    @IBOutlet private weak var dateLabel: UILabel!
-    @IBOutlet private weak var gradientView: UIView!
+    // MARK: - Private Properties
+    private var gradientLayer: CAGradientLayer = CAGradientLayer()
+    private var gradientAnimationHelper = GradientAnimationHelper()
+
+    // MARK: - Overrides Methods
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        gradientLayer.frame = gradientView.bounds
+
+        if !animationLayers.isEmpty {
+            let animation = gradientAnimationHelper.animation
+            let cellViewGradient = gradientAnimationHelper.addGradient(
+                size: cellView.bounds.size,
+                cornerRadius: 16,
+                view: cellView
+            )
+            cellViewGradient.add(animation, forKey: "locationsChange")
+            animationLayers.insert(cellViewGradient)
+        }
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellView.image = nil // сброс изображенияя ячейки перед повторным использованием
+    }
 
     // MARK: - IB Actions
     @IBAction private func likeButtonClicked(_ sender: Any) {
         delegate?.imageListCellDidTapLike(self)
     }
-
-    // MARK: - Private Properties
-    private var gradientLayer: CAGradientLayer = CAGradientLayer()
-    private var gradientAnimationHelper = GradientAnimationHelper()
-
-    // MARK: - Public Properties
-    static let reuseIdentifier = "ImagesListCell"
-    var animationLayers = Set<CALayer>()
 
     // MARK: - Public Methods
     func configureCell(date: String, isLiked: Bool) {
@@ -74,22 +94,5 @@ final class ImagesListCell: UITableViewCell {
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 1.0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 0.0)
         gradientView.layer.insertSublayer(gradientLayer, at: 0)
-    }
-
-    // MARK: - Override Methods
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        gradientLayer.frame = gradientView.bounds
-
-        if !animationLayers.isEmpty {
-            let animation = gradientAnimationHelper.animation
-            let cellViewGradient = gradientAnimationHelper.addGradient(
-                size: cellView.bounds.size,
-                cornerRadius: 16,
-                view: cellView
-            )
-            cellViewGradient.add(animation, forKey: "locationsChange")
-            animationLayers.insert(cellViewGradient)
-        }
     }
 }

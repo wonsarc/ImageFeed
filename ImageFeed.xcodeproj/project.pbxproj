@@ -30,6 +30,8 @@
 		418418F82B64CC1B00BB1348 /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418418F72B64CC1B00BB1348 /* ProfileImageService.swift */; };
 		418418FA2B64CC4600BB1348 /* UserResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418418F92B64CC4600BB1348 /* UserResult.swift */; };
 		418418FC2B667A1B00BB1348 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418418FB2B667A1B00BB1348 /* NetworkClient.swift */; };
+		419893602B8E6D96001B0A8D /* ImageListViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4198935F2B8E6D96001B0A8D /* ImageListViewPresenter.swift */; };
+		419893622B911C3F001B0A8D /* PhotoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419893612B911C3F001B0A8D /* PhotoCellViewModel.swift */; };
 		41999D162B55A67A00A82FD3 /* OAuthTokenResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41999D152B55A67A00A82FD3 /* OAuthTokenResponseBody.swift */; };
 		41999D182B55AA3B00A82FD3 /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41999D172B55AA3B00A82FD3 /* OAuth2Service.swift */; };
 		41A6A3042B66C43300E6944D /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 41A6A3032B66C43300E6944D /* Kingfisher */; };
@@ -86,6 +88,8 @@
 		418418F72B64CC1B00BB1348 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		418418F92B64CC4600BB1348 /* UserResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResult.swift; sourceTree = "<group>"; };
 		418418FB2B667A1B00BB1348 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		4198935F2B8E6D96001B0A8D /* ImageListViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageListViewPresenter.swift; sourceTree = "<group>"; };
+		419893612B911C3F001B0A8D /* PhotoCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCellViewModel.swift; sourceTree = "<group>"; };
 		41999D152B55A67A00A82FD3 /* OAuthTokenResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenResponseBody.swift; sourceTree = "<group>"; };
 		41999D172B55AA3B00A82FD3 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
 		41BC82562B5865A400148BA0 /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
@@ -202,6 +206,14 @@
 			path = Auth;
 			sourceTree = "<group>";
 		};
+		4198935E2B8E6D60001B0A8D /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				4198935F2B8E6D96001B0A8D /* ImageListViewPresenter.swift */,
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
 		41999D112B55A56A00A82FD3 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +237,7 @@
 				417EDBCC2B6D147A00C43D96 /* UrlsResult.swift */,
 				417EDBCE2B6D14A400C43D96 /* PhotoResult.swift */,
 				4152F9402B7547F80016190E /* FeedCellImageStateEnum.swift */,
+				419893612B911C3F001B0A8D /* PhotoCellViewModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -269,6 +282,7 @@
 		41C4C6AC2B82414500CCDECF /* Presenters */ = {
 			isa = PBXGroup;
 			children = (
+				4198935E2B8E6D60001B0A8D /* Image */,
 				41BE1A472B8D099E00FC9CE1 /* Profile */,
 				41C4C6AD2B82415100CCDECF /* Auth */,
 			);
@@ -497,6 +511,7 @@
 				415B0A8B2AE5737600F2B2C7 /* ProfileViewController.swift in Sources */,
 				4152F9412B7547F80016190E /* FeedCellImageStateEnum.swift in Sources */,
 				41BC825A2B5C1B2E00148BA0 /* SplashViewController.swift in Sources */,
+				419893602B8E6D96001B0A8D /* ImageListViewPresenter.swift in Sources */,
 				41999D162B55A67A00A82FD3 /* OAuthTokenResponseBody.swift in Sources */,
 				41C4C6AF2B82416500CCDECF /* WebViewPresenter.swift in Sources */,
 				417EDBC92B6D120D00C43D96 /* ImagesListService.swift in Sources */,
@@ -505,6 +520,7 @@
 				41C5F3922B52C28C009ACAC0 /* AuthViewController.swift in Sources */,
 				4162802C2B86711A00633097 /* AuthHelper.swift in Sources */,
 				417EDBCF2B6D14A400C43D96 /* PhotoResult.swift in Sources */,
+				419893622B911C3F001B0A8D /* PhotoCellViewModel.swift in Sources */,
 				41C5F38F2B51CA0C009ACAC0 /* AuthConfiguration.swift in Sources */,
 				4165C8ED2B151D4900396EAD /* SingleImageViewController.swift in Sources */,
 				41BE1A4B2B8D09DB00FC9CE1 /* ProfileHelper.swift in Sources */,
