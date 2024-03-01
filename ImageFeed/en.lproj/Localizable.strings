@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  ImageFeed
+
+  Created by Artem Krasnov on 01.03.2024.
+  
+*/
+
+// English
+"login" = "Login";
+"splashAlertTitle" = "Something went wrong(";
+"splashAlertmessage" = "Failed to log in";
+"logoutAlertTitle" = "Bye, Bye!";
+"logoutAlertMessage" = "Are you sure you want to get out?";

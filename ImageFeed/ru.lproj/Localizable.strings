@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  ImageFeed
+
+  Created by Artem Krasnov on 01.03.2024.
+  
+*/
+
+// Russian
+"login" = "Войти";
+"splashAlertTitle" = "Что-то пошло не так(";
+"splashAlertmessage" = "Не удалось войти в систему";
+"logoutAlertTitle" = "Пока, Пока!";
+"logoutAlertMessage" = "Уверены что хотите выйти?";

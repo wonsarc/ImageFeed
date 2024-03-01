@@ -68,8 +68,8 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
             title: "Нет", style: .cancel)
 
         let alert = UIAlertController(
-            title: "Пока, Пока!",
-            message: "Уверены что хотите выйти?",
+            title: NSLocalizedString("logoutAlertTitle", comment: ""),
+            message: NSLocalizedString("logoutAlertMessage", comment: ""),
             preferredStyle: .alert
         )
         alert.addAction(logoutAction)

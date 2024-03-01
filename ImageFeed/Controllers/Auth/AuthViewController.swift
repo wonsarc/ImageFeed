@@ -25,7 +25,7 @@ final class AuthViewController: UIViewController {
 
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginButton.backgroundColor = .ypWhite
-        loginButton.setTitle("Войти", for: .normal)
+        loginButton.setTitle(NSLocalizedString("login", comment: ""), for: .normal)
         loginButton.setTitleColor(.ypBlack, for: .normal)
         loginButton.titleLabel?.font = .boldSystemFont(ofSize: 17)
         loginButton.layer.cornerRadius = 16
