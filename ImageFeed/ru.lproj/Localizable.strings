@@ -12,3 +12,5 @@
 "splashAlertmessage" = "Не удалось войти в систему";
 "logoutAlertTitle" = "Пока, Пока!";
 "logoutAlertMessage" = "Уверены что хотите выйти?";
+"logoutActionText" = "Да";
+"logoutCancelText" = "Нет";
