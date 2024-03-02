@@ -8,9 +8,14 @@
 import UIKit
 import Kingfisher
 
+enum PhotoError: Error {
+    case invalidURL
+}
+
 protocol ImageListViewPresenterProtocol {
-    var view: ImagesListViewControllerProtocol? {get set}
-    var imagesListService: ImagesListService {get set}
+    var view: ImagesListViewControllerProtocol? { get set }
+    var imagesListService: ImagesListServiceProtocol { get set }
+    var imageLoader: ImageLoaderProtocol { get set }
 
     func fetchPhotos()
     func updateTableViewAnimated(oldCount: Int, newCount: Int)
@@ -23,8 +28,8 @@ protocol ImageListViewPresenterProtocol {
 final class ImageListViewPresenter: ImageListViewPresenterProtocol {
     // MARK: - Properties
     weak var view: ImagesListViewControllerProtocol?
-    var imagesListService = ImagesListService()
-
+    var imagesListService: ImagesListServiceProtocol = ImagesListService()
+    var imageLoader: ImageLoaderProtocol = ImageLoader()
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -79,29 +84,24 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
             completion(nil)
             return
         }
-        guard let imageURL = URL(string: photo.thumbImageURL) else {
-            completion(nil)
-            return
-        }
-
-        let date = photo.createdAt.map { dateFormatter.string(from: $0) } ?? ""
-
-        loadImage(from: imageURL) { image in
-            guard let image = image else {
-                print("Не удалось загрузить изображение.")
+        imageLoader.loadImage(for: photo) { result in
+            switch result {
+            case .success(let image):
+                let date = self.dateFormatter.string(from: photo.createdAt ?? Date())
+                let photoCellViewModel = self.createPhotoCellViewModel(image: image, date: date, isLiked: photo.isLiked)
+                completion(photoCellViewModel)
+            case .failure(let error):
+                print("Failed to load image:", error)
                 completion(nil)
-                return
             }
-
-            let photoCellViewModel = PhotoCellViewModel(image: image, date: date, isLiked: photo.isLiked)
-            completion(photoCellViewModel)
         }
     }
 
     func willDisplayCell(at indexPath: IndexPath, photosCount: Int) {
         if indexPath.row + 1 == photosCount {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-                self?.fetchPhotos()
+                guard let self = self else { return }
+                self.fetchPhotos()
             }
         }
     }
@@ -114,17 +114,12 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
         updateTableViewAnimated(oldCount: oldCount ?? 0, newCount: newCount)
     }
 
-    private func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
-        let options: KingfisherOptionsInfo = [.cacheMemoryOnly, .transition(.fade(0.2))]
+    private func formatDate(_ date: Date?) -> String? {
+        guard let date = date else { return nil }
+        return dateFormatter.string(from: date)
+    }
 
-        KingfisherManager.shared.retrieveImage(with: url, options: options) { result in
-            switch result {
-            case .success(let imageResult):
-                completion(imageResult.image)
-            case .failure(let error):
-                print("Ошибка при загрузке изображения: \(error)")
-                completion(nil)
-            }
-        }
+    private func createPhotoCellViewModel(image: UIImage, date: String, isLiked: Bool) -> PhotoCellViewModel {
+        return PhotoCellViewModel(image: image, date: date, isLiked: isLiked)
     }
 }
