@@ -23,6 +23,7 @@ final class AuthViewController: UIViewController {
             action: #selector(didTapLoginButton)
         )
 
+        loginButton.accessibilityIdentifier = "Authenticate"
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginButton.backgroundColor = .ypWhite
         loginButton.setTitle(NSLocalizedString("login", comment: ""), for: .normal)

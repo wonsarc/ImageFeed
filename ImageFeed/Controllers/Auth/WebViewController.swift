@@ -30,6 +30,7 @@ final class WebViewController: UIViewController, WebViewControllerProtocol {
     // MARK: - Private Properties
     private lazy var wkWebView: WKWebView = {
         let webView = WKWebView()
+        webView.accessibilityIdentifier = "UnsplashWebView"
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.backgroundColor = .ypWhite
         return webView
