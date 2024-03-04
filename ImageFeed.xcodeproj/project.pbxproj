@@ -10,6 +10,7 @@
 		4110A0BA2B89285A00920777 /* WebViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4110A0B92B89285A00920777 /* WebViewTests.swift */; };
 		4110A0C12B89294D00920777 /* WebViewPresenterSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4110A0C02B89294D00920777 /* WebViewPresenterSpy.swift */; };
 		4110A0C32B892E9F00920777 /* WebViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4110A0C22B892E9F00920777 /* WebViewControllerSpy.swift */; };
+		411EBBB32B95CEC700F35B53 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4198936B2B91C69B001B0A8D /* Localizable.strings */; };
 		41519F802B67CC3500487EEA /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 41519F7F2B67CC3500487EEA /* SwiftKeychainWrapper */; };
 		41519F822B67D1DF00487EEA /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41519F812B67D1DF00487EEA /* TabBarController.swift */; };
 		4152F93C2B74E4AC0016190E /* GradientAnimationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4152F93B2B74E4AC0016190E /* GradientAnimationHelper.swift */; };
@@ -532,6 +533,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				411EBBB32B95CEC700F35B53 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

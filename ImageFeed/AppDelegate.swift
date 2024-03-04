@@ -13,7 +13,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        autoreleasepool {
+              if ProcessInfo().arguments.contains("--Reset") {
+                  OAuth2TokenStorage.shared.deleteToken()
+              }
+          }
+
         setupProgressHUD()
+
         return true
     }
 

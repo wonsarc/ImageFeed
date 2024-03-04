@@ -40,6 +40,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6nO-2L-eOX">
                                 <rect key="frame" x="0.0" y="8" width="48" height="48"/>
+                                <accessibility key="accessibilityConfiguration" identifier="BackButton"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="48" id="hez-Fx-4Vo"/>
                                     <constraint firstAttribute="height" constant="48" id="wIw-aL-Pqg"/>

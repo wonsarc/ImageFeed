@@ -16,6 +16,7 @@ protocol ImagesListServiceProtocol {
 final class ImagesListService: ImagesListServiceProtocol {
     // MARK: - Static Properties
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
+    private let isTestMode =  ProcessInfo.processInfo.arguments.contains("testMode")
 
     // MARK: - Private Properties
     private let photosURL = "\(AuthConfiguration.standard.defaultBaseURL)/photos"
@@ -38,7 +39,8 @@ final class ImagesListService: ImagesListServiceProtocol {
             }
         }
 
-        let nextPage = lastLoadedPage + 1
+        let nextPage = isTestMode ? 1 : lastLoadedPage + 1
+
         let url = networkClient.createURL(
             url: photosURL,
             queryItems: [
