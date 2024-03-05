@@ -19,7 +19,7 @@ protocol ProfileViewPresenterProtocol {
 final class ProfileViewPresenter: ProfileViewPresenterProtocol {
     weak var view: ProfileViewControllerProtocol?
     var profileImageServiceObserver: NSObjectProtocol?
-    private let router: LogoutRouterProtocol = LogoutRouter()
+    var router: LogoutRouterProtocol = LogoutRouter()
 
     func updateAvatar() {
          guard

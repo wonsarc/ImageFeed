@@ -12,6 +12,7 @@
 		4110A0C32B892E9F00920777 /* WebViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4110A0C22B892E9F00920777 /* WebViewControllerSpy.swift */; };
 		411EBBB32B95CEC700F35B53 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4198936B2B91C69B001B0A8D /* Localizable.strings */; };
 		414ED9772B9729AB0078053A /* LogoutRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414ED9762B9729AB0078053A /* LogoutRouter.swift */; };
+		414ED9792B972FAB0078053A /* RouterSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414ED9782B972FAB0078053A /* RouterSpy.swift */; };
 		41519F802B67CC3500487EEA /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 41519F7F2B67CC3500487EEA /* SwiftKeychainWrapper */; };
 		41519F822B67D1DF00487EEA /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41519F812B67D1DF00487EEA /* TabBarController.swift */; };
 		4152F93C2B74E4AC0016190E /* GradientAnimationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4152F93B2B74E4AC0016190E /* GradientAnimationHelper.swift */; };
@@ -87,6 +88,7 @@
 		4110A0C02B89294D00920777 /* WebViewPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenterSpy.swift; sourceTree = "<group>"; };
 		4110A0C22B892E9F00920777 /* WebViewControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewControllerSpy.swift; sourceTree = "<group>"; };
 		414ED9762B9729AB0078053A /* LogoutRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutRouter.swift; sourceTree = "<group>"; };
+		414ED9782B972FAB0078053A /* RouterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterSpy.swift; sourceTree = "<group>"; };
 		41519F812B67D1DF00487EEA /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4152F93B2B74E4AC0016190E /* GradientAnimationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientAnimationHelper.swift; sourceTree = "<group>"; };
 		4152F9402B7547F80016190E /* FeedCellImageStateEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellImageStateEnum.swift; sourceTree = "<group>"; };
@@ -337,6 +339,7 @@
 				41BE1A522B8D185A00FC9CE1 /* ProfileViewTests.swift */,
 				41BE1A542B8D19B800FC9CE1 /* ProfileViewControllerSpy.swift */,
 				41BE1A562B8D1D0D00FC9CE1 /* ProfileViewPresenterSpy.swift */,
+				414ED9782B972FAB0078053A /* RouterSpy.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -595,6 +598,7 @@
 				41BE1A572B8D1D0D00FC9CE1 /* ProfileViewPresenterSpy.swift in Sources */,
 				419893732B9375DF001B0A8D /* ImagesListViewControllerSpy.swift in Sources */,
 				4110A0C32B892E9F00920777 /* WebViewControllerSpy.swift in Sources */,
+				414ED9792B972FAB0078053A /* RouterSpy.swift in Sources */,
 				4110A0C12B89294D00920777 /* WebViewPresenterSpy.swift in Sources */,
 				4198936F2B91CA52001B0A8D /* ImageListViewTests.swift in Sources */,
 				41BE1A552B8D19B800FC9CE1 /* ProfileViewControllerSpy.swift in Sources */,

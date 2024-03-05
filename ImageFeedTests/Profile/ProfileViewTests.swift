@@ -10,26 +10,26 @@ import XCTest
 
 final class ProfileViewTests: XCTestCase {
     func testPresentLogoutAlert() {
-        // Given
-        let viewController = ProfileViewControllerSpy()
+        // given
+        let router = RouterSpy()
         let presenter = ProfileViewPresenter()
-        presenter.view = viewController
+        presenter.router = router
 
-        // When
-        presenter.presentLogoutAlert()
+        // when
+        presenter.didLogout()
 
-        // Then
-        XCTAssertTrue(viewController.presentCalled)
+        // then
+        XCTAssertTrue(router.didCallLogout)
     }
 
     func testStartObservingProfileImageChanges() {
-        // Given
+        // given
         let presenter = ProfileViewPresenter()
 
-        // When
+        // when
         presenter.startObservingProfileImageChanges()
 
-        // Then
+        // then
         XCTAssertNotNil(presenter.profileImageServiceObserver)
     }
 }
