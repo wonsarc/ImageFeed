@@ -9,16 +9,17 @@ import UIKit
 
 protocol ProfileViewPresenterProtocol {
     var view: ProfileViewControllerProtocol? {get set}
-    func logout()
     func updateAvatar()
     func updateProfileDetails(profile: Profile)
     func startObservingProfileImageChanges()
     func setupGradientAnimation()
+    func didLogout()
 }
 
 final class ProfileViewPresenter: ProfileViewPresenterProtocol {
     weak var view: ProfileViewControllerProtocol?
     var profileImageServiceObserver: NSObjectProtocol?
+    private let router: LogoutRouterProtocol = LogoutRouter()
 
     func updateAvatar() {
          guard
@@ -57,12 +58,7 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
             }
     }
 
-    func logout() {
-        OAuth2TokenStorage.shared.deleteToken()
-        WebViewController.cleanCookie()
-        guard let window = UIApplication.shared.windows.first else {
-            fatalError("Invalid Configuration")
-        }
-        window.rootViewController = SplashViewController()
+    func didLogout() {
+        router.logout()
     }
 }

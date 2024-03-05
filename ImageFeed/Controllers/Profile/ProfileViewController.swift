@@ -137,7 +137,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     @objc
     private func didTapLogoutButton() {
         let alert = ProfileHelper().createLogoutAlert {
-            self.presenter?.logout()
+            self.presenter?.didLogout()
         }
         present(alert, animated: true, completion: nil)
     }

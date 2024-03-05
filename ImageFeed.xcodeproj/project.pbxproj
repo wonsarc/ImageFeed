@@ -11,6 +11,7 @@
 		4110A0C12B89294D00920777 /* WebViewPresenterSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4110A0C02B89294D00920777 /* WebViewPresenterSpy.swift */; };
 		4110A0C32B892E9F00920777 /* WebViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4110A0C22B892E9F00920777 /* WebViewControllerSpy.swift */; };
 		411EBBB32B95CEC700F35B53 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4198936B2B91C69B001B0A8D /* Localizable.strings */; };
+		414ED9772B9729AB0078053A /* LogoutRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414ED9762B9729AB0078053A /* LogoutRouter.swift */; };
 		41519F802B67CC3500487EEA /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 41519F7F2B67CC3500487EEA /* SwiftKeychainWrapper */; };
 		41519F822B67D1DF00487EEA /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41519F812B67D1DF00487EEA /* TabBarController.swift */; };
 		4152F93C2B74E4AC0016190E /* GradientAnimationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4152F93B2B74E4AC0016190E /* GradientAnimationHelper.swift */; };
@@ -85,6 +86,7 @@
 		4110A0B92B89285A00920777 /* WebViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewTests.swift; sourceTree = "<group>"; };
 		4110A0C02B89294D00920777 /* WebViewPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenterSpy.swift; sourceTree = "<group>"; };
 		4110A0C22B892E9F00920777 /* WebViewControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewControllerSpy.swift; sourceTree = "<group>"; };
+		414ED9762B9729AB0078053A /* LogoutRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutRouter.swift; sourceTree = "<group>"; };
 		41519F812B67D1DF00487EEA /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4152F93B2B74E4AC0016190E /* GradientAnimationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientAnimationHelper.swift; sourceTree = "<group>"; };
 		4152F9402B7547F80016190E /* FeedCellImageStateEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellImageStateEnum.swift; sourceTree = "<group>"; };
@@ -174,6 +176,14 @@
 				41BE1A502B8D183C00FC9CE1 /* Web */,
 			);
 			path = ImageFeedTests;
+			sourceTree = "<group>";
+		};
+		414ED9752B97298D0078053A /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				414ED9762B9729AB0078053A /* LogoutRouter.swift */,
+			);
+			path = Router;
 			sourceTree = "<group>";
 		};
 		4152F93A2B74E4870016190E /* UIHelpers */ = {
@@ -381,6 +391,7 @@
 		41DE19AE2AD3187300C4E2FF /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
+				414ED9752B97298D0078053A /* Router */,
 				4162802A2B86710400633097 /* Helpers */,
 				41C4C6AC2B82414500CCDECF /* Presenters */,
 				4152F93F2B74E5A60016190E /* Controllers */,
@@ -615,6 +626,7 @@
 				41999D162B55A67A00A82FD3 /* OAuthTokenResponseBody.swift in Sources */,
 				41C4C6AF2B82416500CCDECF /* WebViewPresenter.swift in Sources */,
 				417EDBC92B6D120D00C43D96 /* ImagesListService.swift in Sources */,
+				414ED9772B9729AB0078053A /* LogoutRouter.swift in Sources */,
 				41DE19B02AD3187300C4E2FF /* AppDelegate.swift in Sources */,
 				4152F93C2B74E4AC0016190E /* GradientAnimationHelper.swift in Sources */,
 				41C5F3922B52C28C009ACAC0 /* AuthViewController.swift in Sources */,
