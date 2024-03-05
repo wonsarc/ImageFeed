@@ -52,30 +52,12 @@ final class ImageListViewTests: XCTestCase {
     func testObserveDataChanges() {
         // given
         let presenter = ImageListViewPresenter()
-        let expectation = expectation(description: "Data change notification handled")
 
         // when
         presenter.observeDataChanges()
 
         // then
-        let notificationName = ImagesListService.didChangeNotification
-        let observer = NotificationCenter.default.addObserver(
-            forName: notificationName,
-            object: nil,
-            queue: .main
-        ) { _ in
-            expectation.fulfill()
-        }
-
-        defer {
-            NotificationCenter.default.removeObserver(observer)
-        }
-
-        waitForExpectations(timeout: 1.0) { error in
-            if let error = error {
-                XCTFail("Failed to receive notification within timeout: \(error)")
-            }
-        }
+        XCTAssertNotNil(presenter.profileImageListViewObserver)
     }
 
     func testDidLikePhoto() {

@@ -20,4 +20,7 @@ final class ImagesListViewControllerSpy: ImagesListViewControllerProtocol {
         oldCountView = oldCount
         newCountView = newCount
     }
+
+    func showLoading(isLoading: Bool) {
+    }
 }

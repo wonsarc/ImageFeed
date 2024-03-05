@@ -28,6 +28,7 @@ protocol ImageListViewPresenterProtocol {
 final class ImageListViewPresenter: ImageListViewPresenterProtocol {
     // MARK: - Properties
     weak var view: ImagesListViewControllerProtocol?
+    var profileImageListViewObserver: NSObjectProtocol?
     var imagesListService: ImagesListServiceProtocol = ImagesListService()
     var imageLoader: ImageLoaderProtocol = ImageLoader()
     private let dateFormatter: DateFormatter = {
@@ -48,7 +49,7 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
     }
 
     func observeDataChanges() {
-        NotificationCenter.default.addObserver(
+        profileImageListViewObserver = NotificationCenter.default.addObserver(
             forName: ImagesListService.didChangeNotification,
             object: nil,
             queue: .main) {_ in
