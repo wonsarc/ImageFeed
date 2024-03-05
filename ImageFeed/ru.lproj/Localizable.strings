@@ -7,10 +7,10 @@
 */
 
 // Russian
-"login" = "Войти";
-"splashAlertTitle" = "Что-то пошло не так(";
-"splashAlertmessage" = "Не удалось войти в систему";
-"logoutAlertTitle" = "Пока, Пока!";
-"logoutAlertMessage" = "Уверены что хотите выйти?";
-"logoutActionText" = "Да";
-"logoutCancelText" = "Нет";
+"auth_screen.login" = "Войти";
+"splash_alert.title" = "Что-то пошло не так(";
+"splash_alert.message" = "Не удалось войти в систему";
+"profile_alert.title" = "Пока, Пока!";
+"profile_alert.message" = "Уверены что хотите выйти?";
+"profile_alert.action" = "Да";
+"profile_alert.cancel" = "Нет";

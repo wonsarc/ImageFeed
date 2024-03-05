@@ -61,15 +61,15 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
         guard let view = view else { return }
 
         let logoutAction = UIAlertAction(
-            title: NSLocalizedString("logoutActionText", comment: ""), style: .default) { [weak self] _ in
+            title: NSLocalizedString("profile_alert.action", comment: ""), style: .default) { [weak self] _ in
                 self?.logout()
             }
         let cancelAction = UIAlertAction(
-            title: NSLocalizedString("logoutCancelText", comment: ""), style: .cancel)
+            title: NSLocalizedString("profile_alert.cancel", comment: ""), style: .cancel)
 
         let alert = UIAlertController(
-            title: NSLocalizedString("logoutAlertTitle", comment: ""),
-            message: NSLocalizedString("logoutAlertMessage", comment: ""),
+            title: NSLocalizedString("profile_alert.title", comment: ""),
+            message: NSLocalizedString("profile_alert.message", comment: ""),
             preferredStyle: .alert
         )
         alert.addAction(logoutAction)

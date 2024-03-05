@@ -91,8 +91,8 @@ final class SplashViewController: UIViewController {
 
     private func showAlert() {
         let alert = UIAlertController(
-            title: NSLocalizedString("splashAlertTitle", comment: ""),
-            message: NSLocalizedString("splashAlertMessage", comment: ""),
+            title: NSLocalizedString("splash_alert.title", comment: ""),
+            message: NSLocalizedString("splash_alert.message", comment: ""),
             preferredStyle: UIAlertController.Style.alert
         )
 

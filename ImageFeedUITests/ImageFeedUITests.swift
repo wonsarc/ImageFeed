@@ -133,10 +133,10 @@ final class ImageFeedUITests: XCTestCase {
         // logout
         app.buttons["LogoutButton"].tap()
 
-        let alert = app.alerts[localizedString(key: "logoutAlertTitle")]
+        let alert = app.alerts[localizedString(key: "profile_alert.title")]
         XCTAssert(alert.waitForExistence(timeout: 5))
 
-        alert.buttons[localizedString(key: "logoutActionText")].tap()
+        alert.buttons[localizedString(key: "profile_alert.action")].tap()
 
         let authenticateButton = app.buttons["Authenticate"]
 
