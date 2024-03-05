@@ -61,7 +61,7 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
     }
 
     func didLikePhoto(at index: Int, completion: @escaping (Bool) -> Void) {
-        UIBlockingProgressHUD.animate()
+        view?.showLoading(isLoading: true)
         guard let photo = view?.photos[index] else {return}
 
         imagesListService.changeLike(
@@ -70,10 +70,10 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
                 switch result {
                 case .success:
                     self.view?.photos = self.imagesListService.photos
-                    UIBlockingProgressHUD.dismiss()
+                    self.view?.showLoading(isLoading: false)
                     completion(true)
                 case.failure:
-                    UIBlockingProgressHUD.dismiss()
+                    self.view?.showLoading(isLoading: false)
                     completion(false)
                 }
             }

@@ -12,6 +12,7 @@ protocol ImagesListViewControllerProtocol: AnyObject {
     var presenter: ImageListViewPresenterProtocol? { get set }
     var photos: [Photo] { get set }
     func updateTableViewAnimated(oldCount: Int, newCount: Int)
+    func showLoading(isLoading: Bool)
 }
 
 final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
@@ -61,6 +62,14 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
             }
             tableView.insertRows(at: indexPaths, with: .automatic)
         } completion: { _ in }
+    }
+
+    func showLoading(isLoading: Bool) {
+        if isLoading {
+            UIBlockingProgressHUD.animate()
+        } else {
+            UIBlockingProgressHUD.dismiss()
+        }
     }
 
     // MARK: - Private Methods
