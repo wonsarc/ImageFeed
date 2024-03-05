@@ -86,6 +86,7 @@ final class ImageFeedUITests: XCTestCase {
 
         // click cell n and wait hidden hud
         cell.tap()
+        waitForHUDToDisappear(hud)
 
         // zoom image
         let image = app.scrollViews.images.element(boundBy: 0)
