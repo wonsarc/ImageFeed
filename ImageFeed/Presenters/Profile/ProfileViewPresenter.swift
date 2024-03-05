@@ -9,7 +9,7 @@ import UIKit
 
 protocol ProfileViewPresenterProtocol {
     var view: ProfileViewControllerProtocol? {get set}
-    func presentLogoutAlert()
+    func logout()
     func updateAvatar()
     func updateProfileDetails(profile: Profile)
     func startObservingProfileImageChanges()
@@ -57,33 +57,7 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
             }
     }
 
-    func presentLogoutAlert() {
-        guard let view = view else { return }
-
-        let logoutAction = UIAlertAction(
-            title: NSLocalizedString("profile_alert.action", comment: ""), style: .default) { [weak self] _ in
-                self?.logout()
-            }
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("profile_alert.cancel", comment: ""), style: .cancel)
-
-        let alert = UIAlertController(
-            title: NSLocalizedString("profile_alert.title", comment: ""),
-            message: NSLocalizedString("profile_alert.message", comment: ""),
-            preferredStyle: .alert
-        )
-        alert.addAction(logoutAction)
-        alert.addAction(cancelAction)
-
-        view.present(alert,
-                     animated: true,
-                     completion: {
-            UIBlockingProgressHUD.dismiss()
-        }
-        )
-    }
-
-    private func logout() {
+    func logout() {
         OAuth2TokenStorage.shared.deleteToken()
         WebViewController.cleanCookie()
         guard let window = UIApplication.shared.windows.first else {

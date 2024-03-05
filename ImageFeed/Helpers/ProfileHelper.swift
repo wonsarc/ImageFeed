@@ -5,10 +5,11 @@
 //  Created by Artem Krasnov on 26.02.2024.
 //
 
-import Foundation
+import UIKit
 
 protocol ProfileHelperProtocol {
     func setupGradientAnimation(view: ProfileViewControllerProtocol)
+    func createLogoutAlert(completion: @escaping () -> Void) -> UIAlertController
 }
 
 final class ProfileHelper: ProfileHelperProtocol {
@@ -47,5 +48,27 @@ final class ProfileHelper: ProfileHelperProtocol {
         )
         descriptionLabelGradient.add(animation, forKey: "locationsChange")
         view.animationLayers.insert(descriptionLabelGradient)
+    }
+
+    func createLogoutAlert(completion: @escaping () -> Void) -> UIAlertController {
+        let logoutConfirmationAlert = UIAlertController(
+            title: NSLocalizedString("profile_alert.title", comment: ""),
+            message: NSLocalizedString("profile_alert.message", comment: ""),
+            preferredStyle: .alert
+        )
+
+        let confirmAction = UIAlertAction(
+            title: NSLocalizedString("profile_alert.action", comment: ""),
+            style: .default) { _ in
+                completion()
+            }
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString("profile_alert.cancel", comment: ""),
+            style: .cancel)
+
+        logoutConfirmationAlert.addAction(confirmAction)
+        logoutConfirmationAlert.addAction(cancelAction)
+
+        return logoutConfirmationAlert
     }
 }
