@@ -32,4 +32,28 @@ final class ProfileViewTests: XCTestCase {
         // then
         XCTAssertNotNil(presenter.profileImageServiceObserver)
     }
+
+    func testUpdateProfileDetails() {
+        // given
+        let viewController = ProfileViewControllerSpy()
+        let presenter = ProfileViewPresenter()
+
+        viewController.presenter = presenter
+        presenter.view = viewController
+
+        let newProfile = Profile(
+            username: "testUserName",
+            name: "testName",
+            loginName: "testLoginName",
+            bio: "testBio"
+        )
+
+        // when
+        presenter.updateProfileDetails(profile: newProfile)
+
+        // then
+        XCTAssertNotNil(viewController.nameLabel.text)
+        XCTAssertNotNil(viewController.loginLabel.text)
+        XCTAssertNotNil(viewController.descriptionLabel.text)
+    }
 }
