@@ -7,12 +7,19 @@
 
 import Foundation
 
-final class ImagesListService {
+protocol ImagesListServiceProtocol {
+    var photos: [Photo] { get }
+    func fetchPhotosNextPage()
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void)
+}
+
+final class ImagesListService: ImagesListServiceProtocol {
     // MARK: - Static Properties
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
+    private let isTestMode =  ProcessInfo.processInfo.arguments.contains("testMode")
 
     // MARK: - Private Properties
-    private let photosURL = "\(defaultBaseURL)/photos"
+    private let photosURL = "\(AuthConfiguration.standard.defaultBaseURL)/photos"
     private let networkClient = NetworkClient()
     private let urlSession = URLSession.shared
     private let dateFormatter = ISO8601DateFormatter()
@@ -32,7 +39,8 @@ final class ImagesListService {
             }
         }
 
-        let nextPage = lastLoadedPage + 1
+        let nextPage = isTestMode ? 1 : lastLoadedPage + 1
+
         let url = networkClient.createURL(
             url: photosURL,
             queryItems: [
@@ -49,7 +57,7 @@ final class ImagesListService {
     }
 
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
-        let likeURL = "\(defaultBaseURL)/photos/\(photoId)/like"
+        let likeURL = "\(AuthConfiguration.standard.defaultBaseURL)/photos/\(photoId)/like"
         let url = networkClient.createURL(
             url: likeURL,
             queryItems: [])

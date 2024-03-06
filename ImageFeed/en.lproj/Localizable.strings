@@ -1,0 +1,18 @@
+/* 
+  Localizable.strings
+  ImageFeed
+
+  Created by Artem Krasnov on 01.03.2024.
+  
+*/
+
+// English
+"auth_screen.login" = "Login";
+
+"splash_alert.title" = "Something went wrong(";
+"splash_alert.message" = "Failed to log in";
+
+"profile_alert.title" = "Bye, Bye!";
+"profile_alert.message" = "Are you sure you want to get out?";
+"profile_alert.action" = "Yes";
+"profile_alert.cancel" = "No";

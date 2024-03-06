@@ -22,12 +22,15 @@ final class AuthViewController: UIViewController {
             target: self,
             action: #selector(didTapLoginButton)
         )
+
+        loginButton.accessibilityIdentifier = "Authenticate"
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginButton.backgroundColor = .ypWhite
-        loginButton.setTitle("Войти", for: .normal)
+        loginButton.setTitle(NSLocalizedString("auth_screen.login", comment: ""), for: .normal)
         loginButton.setTitleColor(.ypBlack, for: .normal)
         loginButton.titleLabel?.font = .boldSystemFont(ofSize: 17)
         loginButton.layer.cornerRadius = 16
+
         return loginButton
     }()
 
@@ -51,6 +54,11 @@ final class AuthViewController: UIViewController {
             guard
                 let webViewController = segue.destination as? WebViewController
             else { fatalError("Failed to prepare for \(showWebViewSegueIdentifier)") }
+
+            let authHelper = AuthHelper()
+            let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+            webViewController.presenter = webViewPresenter
+            webViewPresenter.view = webViewController
             webViewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)

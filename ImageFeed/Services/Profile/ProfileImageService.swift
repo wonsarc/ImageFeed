@@ -7,8 +7,13 @@
 
 import Foundation
 
-final class ProfileImageService {
-    private let profileImageURL = "\(defaultBaseURL)/me"
+protocol ProfileImageServiceProtocol {
+    var avatarURL: String? { get }
+
+}
+
+final class ProfileImageService: ProfileImageServiceProtocol {
+    private let profileImageURL = "\(AuthConfiguration.standard.defaultBaseURL)/me"
     static let shared = ProfileImageService()
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
 

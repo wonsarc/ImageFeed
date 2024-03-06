@@ -8,9 +8,19 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
-    private var profileImageServiceObserver: NSObjectProtocol?
-    private var gradientAnimationHelper = GradientAnimationHelper()
+protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfileViewPresenterProtocol? { get set }
+    var logoImageView: UIImageView { get set }
+    var nameLabel: UILabel { get set }
+    var loginLabel: UILabel { get set }
+    var descriptionLabel: UILabel { get set }
+    var animationLayers: Set<CALayer> { get set }
+    func present(_ viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?)
+    func updateProfileDetails(profile: Profile)
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
+    var presenter: ProfileViewPresenterProtocol?
     var animationLayers = Set<CALayer>()
 
     // MARK: - View Life Cycles
@@ -21,37 +31,33 @@ final class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let profileViewPresenter = ProfileViewPresenter()
+        self.presenter = profileViewPresenter
+        profileViewPresenter.view = self
+
         view.backgroundColor = .ypBlack
         setupViews()
         setupConstraints()
-        setupGradientAnimation()
+        presenter?.setupGradientAnimation()
 
         if let profile = ProfileService.shared.profile {
             updateProfileDetails(profile: profile)
         }
 
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else {return}
-                self.updateAvatar()
-            }
+        presenter?.startObservingProfileImageChanges()
         animationLayers.forEach { $0.removeFromSuperlayer() }
-        updateAvatar()
+        presenter?.updateAvatar()
     }
 
     // MARK: - Private Properties
-    private lazy var logoImageView: UIImageView = {
+    lazy var logoImageView: UIImageView = {
         let logoImageView = UIImageView()
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         logoImageView.clipsToBounds = true
         return logoImageView
     }()
 
-    private lazy var nameLabel: UILabel = {
+    lazy var nameLabel: UILabel = {
         let nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.textColor = .ypWhite
@@ -59,7 +65,7 @@ final class ProfileViewController: UIViewController {
         return nameLabel
     }()
 
-    private lazy var loginLabel: UILabel = {
+    lazy var loginLabel: UILabel = {
         let loginLabel = UILabel()
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
         loginLabel.textColor = .ypGray
@@ -67,7 +73,7 @@ final class ProfileViewController: UIViewController {
         return loginLabel
     }()
 
-    private lazy var descriptionLabel: UILabel = {
+    lazy var descriptionLabel: UILabel = {
         let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.textColor = .ypWhite
@@ -83,9 +89,17 @@ final class ProfileViewController: UIViewController {
             action: #selector(didTapLogoutButton)
         )
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        logoutButton.accessibilityIdentifier = "LogoutButton"
         logoutButton.tintColor = .ypRed
         return logoutButton
     }()
+
+    // MARK: - Public Func
+    func updateProfileDetails(profile: Profile) {
+        nameLabel.text = profile.name
+        loginLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
+    }
 
     // MARK: - Private Func
     private func setupViews() {
@@ -128,89 +142,11 @@ final class ProfileViewController: UIViewController {
         ])
     }
 
-    private func updateProfileDetails (profile: Profile) {
-        nameLabel.text = profile.name
-        loginLabel.text = profile.loginName
-        descriptionLabel.text = profile.bio
-    }
-
-    private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
-        self.logoImageView.kf.setImage(
-            with: url,
-            placeholder: UIImage(named: "User")
-        )
-    }
-
     @objc
     private func didTapLogoutButton() {
-        showAlert()
-    }
-
-    private func showAlert() {
-        let alert = UIAlertController(
-            title: "Пока, Пока!",
-            message: "Уверены что хотите выйти?",
-            preferredStyle: UIAlertController.Style.alert
-        )
-        let actionYes = UIAlertAction(
-            title: "Да", style: UIAlertAction.Style.default) { [weak self] (_) in
-                guard self != nil else { return }
-                OAuth2TokenStorage.shared.deleteToken()
-                WebViewController.cleanCookie()
-                guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-                window.rootViewController = SplashViewController()
+        let alert = ProfileHelper().createLogoutAlert {
+            self.presenter?.didLogout()
         }
-        let actionNo = UIAlertAction(
-            title: "Нет", style: UIAlertAction.Style.default)
-
-        alert.addAction(actionYes)
-        alert.addAction(actionNo)
-        self.present(
-            alert,
-            animated: true,
-            completion: {
-                UIBlockingProgressHUD.dismiss()
-            }
-        )
-    }
-
-    private func setupGradientAnimation() {
-        let animation = gradientAnimationHelper.animation
-
-        let logoImageViewGradient = gradientAnimationHelper.addGradient(
-            size: CGSize(width: 70, height: 70),
-            cornerRadius: 35,
-            view: logoImageView
-        )
-        logoImageViewGradient.add(animation, forKey: "locationsChange")
-        animationLayers.insert(logoImageViewGradient)
-
-        let nameLabelGradient = gradientAnimationHelper.addGradient(
-            size: CGSize(width: 250, height: 18),
-            cornerRadius: 10,
-            view: nameLabel
-        )
-        nameLabelGradient.add(animation, forKey: "locationsChange")
-        animationLayers.insert(nameLabelGradient)
-
-        let loginLabelGradient = gradientAnimationHelper.addGradient(
-            size: CGSize(width: 200, height: 18),
-            cornerRadius: 10,
-            view: loginLabel
-        )
-        loginLabelGradient.add(animation, forKey: "locationsChange")
-        animationLayers.insert(loginLabelGradient)
-
-        let descriptionLabelGradient = gradientAnimationHelper.addGradient(
-            size: CGSize(width: 150, height: 18),
-            cornerRadius: 10,
-            view: descriptionLabel
-        )
-        descriptionLabelGradient.add(animation, forKey: "locationsChange")
-        animationLayers.insert(descriptionLabelGradient)
+        present(alert, animated: true, completion: nil)
     }
 }

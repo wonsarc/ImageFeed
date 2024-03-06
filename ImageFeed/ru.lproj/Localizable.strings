@@ -1,0 +1,16 @@
+/* 
+  Localizable.strings
+  ImageFeed
+
+  Created by Artem Krasnov on 01.03.2024.
+  
+*/
+
+// Russian
+"auth_screen.login" = "Войти";
+"splash_alert.title" = "Что-то пошло не так(";
+"splash_alert.message" = "Не удалось войти в систему";
+"profile_alert.title" = "Пока, Пока!";
+"profile_alert.message" = "Уверены что хотите выйти?";
+"profile_alert.action" = "Да";
+"profile_alert.cancel" = "Нет";
