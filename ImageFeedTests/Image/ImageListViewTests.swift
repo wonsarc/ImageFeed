@@ -102,7 +102,7 @@ final class ImageListViewTests: XCTestCase {
         }
     }
 
-    func testConfigurePhotoCell() {
+    func testUploadImage() {
         // given
         let presenter = ImageListViewPresenter()
         let imageLoader = ImageLoaderSpy()
@@ -115,10 +115,20 @@ final class ImageListViewTests: XCTestCase {
         view.photos = photos
 
         // when
-        presenter.configurePhotoCell(at: indexPath) { response in
-
+        presenter.uploadImage(at: indexPath) { image in
             // then
-            XCTAssertEqual(response?.image, UIImage(named: "0"))
+            XCTAssertEqual(image, UIImage(named: "0"))
         }
+    }
+
+    func testFormatDateWithNil() {
+        // given
+        let presenter = ImageListViewPresenter()
+
+        // when
+        let date = presenter.formatDate(nil)
+
+        // then
+        XCTAssertEqual("", date)
     }
 }

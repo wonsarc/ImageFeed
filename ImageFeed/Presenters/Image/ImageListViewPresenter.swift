@@ -22,7 +22,8 @@ protocol ImageListViewPresenterProtocol {
     func observeDataChanges()
     func didLikePhoto(at index: Int, completion: @escaping (Bool) -> Void)
     func willDisplayCell(at indexPath: IndexPath, photosCount: Int)
-    func configurePhotoCell(at indexPath: IndexPath, completion: @escaping (PhotoCellViewModel?) -> Void)
+    func uploadImage(at indexPath: IndexPath, completion: @escaping (UIImage?) -> Void)
+    func formatDate(_ date: Date?) -> String
 }
 
 final class ImageListViewPresenter: ImageListViewPresenterProtocol {
@@ -80,7 +81,7 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
             }
     }
 
-    func configurePhotoCell(at indexPath: IndexPath, completion: @escaping (PhotoCellViewModel?) -> Void) {
+    func uploadImage(at indexPath: IndexPath, completion: @escaping (UIImage?) -> Void) {
         guard let photo = view?.photos[indexPath.row] else {
             completion(nil)
             return
@@ -88,15 +89,18 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
         imageLoader.loadImage(for: photo) { result in
             switch result {
             case .success(let image):
-                let date = self.dateFormatter.string(from: photo.createdAt ?? Date())
-                let photoCellViewModel = self.createPhotoCellViewModel(image: image, date: date, isLiked: photo.isLiked)
-                completion(photoCellViewModel)
+                completion(image)
             case .failure(let error):
                 print("Failed to load image:", error)
                 completion(nil)
             }
         }
     }
+
+    func formatDate(_ date: Date?) -> String {
+       guard let date = date else { return "" }
+       return dateFormatter.string(from: date)
+   }
 
     func willDisplayCell(at indexPath: IndexPath, photosCount: Int) {
         if indexPath.row + 1 == photosCount {
@@ -113,14 +117,5 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
         let newCount = imagesListService.photos.count
         view?.photos = imagesListService.photos
         updateTableViewAnimated(oldCount: oldCount ?? 0, newCount: newCount)
-    }
-
-    private func formatDate(_ date: Date?) -> String? {
-        guard let date = date else { return nil }
-        return dateFormatter.string(from: date)
-    }
-
-    private func createPhotoCellViewModel(image: UIImage, date: String, isLiked: Bool) -> PhotoCellViewModel {
-        return PhotoCellViewModel(image: image, date: date, isLiked: isLiked)
     }
 }

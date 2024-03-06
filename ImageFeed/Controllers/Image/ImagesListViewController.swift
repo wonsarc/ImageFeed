@@ -133,19 +133,24 @@ extension ImagesListViewController: UITableViewDataSource {
         imageListCell.imageState = .loading
         imageListCell.delegate = self
 
-        presenter?.configurePhotoCell(at: indexPath) { photoCellViewModel in
-            if let photoCellViewModel = photoCellViewModel {
-                imageListCell.imageState = .finished(photoCellViewModel.image)
+        guard let presenter = presenter else { return UITableViewCell()}
 
-                imageListCell.configureCell(
-                    date: photoCellViewModel.date,
-                    isLiked: photoCellViewModel.isLiked
-                )
+        presenter.uploadImage(at: indexPath) { image in
+            if let image = image {
+                imageListCell.imageState = .finished(image)
             } else {
                 imageListCell.imageState = .error
                 print("Ошибка при загрузке изображения")
             }
         }
+
+        let photo = photos[indexPath.row]
+        let formatDate = presenter.formatDate(photo.createdAt)
+
+        imageListCell.configureCell(
+            date: formatDate,
+            isLiked: photo.isLiked
+        )
 
         return imageListCell
     }
