@@ -35,12 +35,7 @@ final class ProfileViewTests: XCTestCase {
 
     func testUpdateProfileDetails() {
         // given
-        let viewController = ProfileViewControllerSpy()
-        let presenter = ProfileViewPresenter()
-
-        viewController.presenter = presenter
-        presenter.view = viewController
-
+        let viewController = ProfileViewController()
         let newProfile = Profile(
             username: "testUserName",
             name: "testName",
@@ -49,7 +44,7 @@ final class ProfileViewTests: XCTestCase {
         )
 
         // when
-        presenter.updateProfileDetails(profile: newProfile)
+        viewController.updateProfileDetails(profile: newProfile)
 
         // then
         XCTAssertNotNil(viewController.nameLabel.text)

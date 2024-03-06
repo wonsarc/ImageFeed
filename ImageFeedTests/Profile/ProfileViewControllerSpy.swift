@@ -20,4 +20,7 @@ final class ProfileViewControllerSpy: UIViewController, ProfileViewControllerPro
     override func present(_ viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?) {
         presentCalled = true
     }
+
+    func updateProfileDetails(profile: ImageFeed.Profile) {
+    }
 }

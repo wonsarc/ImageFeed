@@ -16,6 +16,7 @@ protocol ProfileViewControllerProtocol: AnyObject {
     var descriptionLabel: UILabel { get set }
     var animationLayers: Set<CALayer> { get set }
     func present(_ viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?)
+    func updateProfileDetails(profile: Profile)
 }
 
 final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
@@ -40,7 +41,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         presenter?.setupGradientAnimation()
 
         if let profile = ProfileService.shared.profile {
-            presenter?.updateProfileDetails(profile: profile)
+            updateProfileDetails(profile: profile)
         }
 
         presenter?.startObservingProfileImageChanges()
@@ -92,6 +93,13 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         logoutButton.tintColor = .ypRed
         return logoutButton
     }()
+
+    // MARK: - Public Func
+    func updateProfileDetails(profile: Profile) {
+        nameLabel.text = profile.name
+        loginLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
+    }
 
     // MARK: - Private Func
     private func setupViews() {

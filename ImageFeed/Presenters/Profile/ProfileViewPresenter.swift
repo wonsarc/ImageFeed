@@ -10,7 +10,6 @@ import UIKit
 protocol ProfileViewPresenterProtocol {
     var view: ProfileViewControllerProtocol? {get set}
     func updateAvatar()
-    func updateProfileDetails(profile: Profile)
     func startObservingProfileImageChanges()
     func setupGradientAnimation()
     func didLogout()
@@ -33,13 +32,6 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
              placeholder: UIImage(named: "User")
          )
      }
-
-    func updateProfileDetails(profile: Profile) {
-        guard let view = view else { return }
-        view.nameLabel.text = profile.name
-        view.loginLabel.text = profile.loginName
-        view.descriptionLabel.text = profile.bio
-    }
 
     func setupGradientAnimation() {
         guard let view = view else { return }
