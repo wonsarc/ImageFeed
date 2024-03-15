@@ -9,12 +9,12 @@ import UIKit
 import Kingfisher
 
 protocol ImageLoaderProtocol {
-    func loadImage(for photo: Photo, completion: @escaping (Result<UIImage, Error>) -> Void)
+    func loadImage(on url: String, completion: @escaping (Result<UIImage, Error>) -> Void)
 }
 
 final class ImageLoader: ImageLoaderProtocol {
-    func loadImage(for photo: Photo, completion: @escaping (Result<UIImage, Error>) -> Void) {
-       guard let imageURL = URL(string: photo.thumbImageURL) else {
+    func loadImage(on stringUrl: String, completion: @escaping (Result<UIImage, Error>) -> Void) {
+       guard let imageURL = URL(string: stringUrl) else {
            completion(.failure(PhotoError.invalidURL))
            return
        }

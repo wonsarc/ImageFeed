@@ -17,6 +17,7 @@ protocol ProfileViewControllerProtocol: AnyObject {
     var animationLayers: Set<CALayer> { get set }
     func present(_ viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?)
     func updateProfileDetails(profile: Profile)
+    func updateAvatar()
 }
 
 final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
@@ -46,7 +47,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
 
         presenter?.startObservingProfileImageChanges()
         animationLayers.forEach { $0.removeFromSuperlayer() }
-        presenter?.updateAvatar()
+        updateAvatar()
     }
 
     // MARK: - Private Properties
@@ -99,6 +100,21 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         nameLabel.text = profile.name
         loginLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
+    }
+
+    func updateAvatar() {
+        guard
+            let avatarURL = ProfileImageService.shared.avatarURL
+        else { return }
+
+        ImageLoader().loadImage(on: avatarURL, completion: { result in
+            switch result {
+            case.success(let image):
+                self.logoImageView.image = image
+            case .failure(let error):
+                print("Ошибка при загрузке изображения: \(error)")
+            }
+        })
     }
 
     // MARK: - Private Func

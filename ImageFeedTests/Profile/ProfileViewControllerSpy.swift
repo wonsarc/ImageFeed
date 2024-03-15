@@ -23,4 +23,7 @@ final class ProfileViewControllerSpy: UIViewController, ProfileViewControllerPro
 
     func updateProfileDetails(profile: ImageFeed.Profile) {
     }
+
+    func updateAvatar() {
+    }
 }

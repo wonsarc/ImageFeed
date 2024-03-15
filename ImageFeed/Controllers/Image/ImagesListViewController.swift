@@ -135,16 +135,18 @@ extension ImagesListViewController: UITableViewDataSource {
 
         guard let presenter = presenter else { return UITableViewCell()}
 
-        presenter.uploadImage(at: indexPath) { image in
-            if let image = image {
-                imageListCell.imageState = .finished(image)
-            } else {
-                imageListCell.imageState = .error
-                print("Ошибка при загрузке изображения")
-            }
-        }
-
         let photo = photos[indexPath.row]
+
+        ImageLoader().loadImage(on: photo.thumbImageURL, completion: { result in
+            switch result {
+            case.success(let image):
+                imageListCell.imageState = .finished(image)
+            case .failure(let error):
+                imageListCell.imageState = .error
+                print("Ошибка при загрузке изображения: \(error)")
+            }
+        })
+
         let formatDate = presenter.formatDate(photo.createdAt)
 
         imageListCell.configureCell(

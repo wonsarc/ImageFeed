@@ -5,7 +5,7 @@
 //  Created by Artem Krasnov on 27.02.2024.
 //
 
-import UIKit
+import Foundation
 import Kingfisher
 
 enum PhotoError: Error {
@@ -22,7 +22,6 @@ protocol ImageListViewPresenterProtocol {
     func observeDataChanges()
     func didLikePhoto(at index: Int, completion: @escaping (Bool) -> Void)
     func willDisplayCell(at indexPath: IndexPath, photosCount: Int)
-    func uploadImage(at indexPath: IndexPath, completion: @escaping (UIImage?) -> Void)
     func formatDate(_ date: Date?) -> String
 }
 
@@ -79,22 +78,6 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
                     completion(false)
                 }
             }
-    }
-
-    func uploadImage(at indexPath: IndexPath, completion: @escaping (UIImage?) -> Void) {
-        guard let photo = view?.photos[indexPath.row] else {
-            completion(nil)
-            return
-        }
-        imageLoader.loadImage(for: photo) { result in
-            switch result {
-            case .success(let image):
-                completion(image)
-            case .failure(let error):
-                print("Failed to load image:", error)
-                completion(nil)
-            }
-        }
     }
 
     func formatDate(_ date: Date?) -> String {
