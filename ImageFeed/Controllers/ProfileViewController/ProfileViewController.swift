@@ -114,7 +114,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
             let avatarURL = ProfileImageService.shared.avatarURL
         else { return }
 
-        ImageLoadService().loadImage(on: avatarURL, completion: { result in
+        presenter?.downloadAvatar(avatarURL, completion: { result in
             switch result {
             case.success(let image):
                 self.logoImageView.image = image

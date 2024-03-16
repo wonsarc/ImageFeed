@@ -44,7 +44,6 @@ final class ImageFeedUITests: XCTestCase {
 
         loginTextField.tap()
         loginTextField.typeText(testEmail)
-        webView.tap()
 
         // input text password
         let passwordTextField = webView.descendants(matching: .secureTextField).element
@@ -52,7 +51,6 @@ final class ImageFeedUITests: XCTestCase {
 
         passwordTextField.tap()
         passwordTextField.typeText(testPassword)
-        webView.tap()
 
         // click web login
         let loginButton = webView.buttons["Login"]

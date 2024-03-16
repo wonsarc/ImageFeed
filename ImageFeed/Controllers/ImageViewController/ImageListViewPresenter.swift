@@ -15,7 +15,6 @@ enum PhotoError: Error {
 protocol ImageListViewPresenterProtocol {
     var view: ImagesListViewControllerProtocol? { get set }
     var imagesListService: ImagesListServiceProtocol { get set }
-    var imageLoader: ImageLoaderProtocol { get set }
 
     func fetchPhotos()
     func updateTableViewAnimated(oldCount: Int, newCount: Int)
@@ -23,6 +22,7 @@ protocol ImageListViewPresenterProtocol {
     func didLikePhoto(at index: Int, completion: @escaping (Bool) -> Void)
     func willDisplayCell(at indexPath: IndexPath, photosCount: Int)
     func formatDate(_ date: Date?) -> String
+    func downloadImagePhoto(_ photoImageURL: String, completion: @escaping ResultImageError)
 }
 
 final class ImageListViewPresenter: ImageListViewPresenterProtocol {
@@ -32,7 +32,6 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
     weak var view: ImagesListViewControllerProtocol?
     var profileImageListViewObserver: NSObjectProtocol?
     var imagesListService: ImagesListServiceProtocol = ImagesListService()
-    var imageLoader: ImageLoaderProtocol = ImageLoadService()
 
     // MARK: - Private Properties
 
@@ -53,6 +52,10 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
 
     func fetchPhotos() {
         imagesListService.fetchPhotosNextPage()
+    }
+
+    func downloadImagePhoto(_ photoImageURL: String, completion: @escaping ResultImageError) {
+        ImageDownloadService().downloadImage(on: photoImageURL, completion: completion)
     }
 
     func observeDataChanges() {

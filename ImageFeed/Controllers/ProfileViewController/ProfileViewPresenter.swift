@@ -13,6 +13,7 @@ protocol ProfileViewPresenterProtocol {
     func startObservingProfileImageChanges()
     func setupGradientAnimation()
     func didLogout()
+    func downloadAvatar(_ avatarURL: String, completion: @escaping ResultImageError)
 }
 
 final class ProfileViewPresenter: ProfileViewPresenterProtocol {
@@ -44,5 +45,9 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
 
     func didLogout() {
         router.logout()
+    }
+
+    func downloadAvatar(_ avatarURL: String, completion: @escaping ResultImageError) {
+        ImageDownloadService().downloadImage(on: avatarURL, completion: completion)
     }
 }

@@ -150,7 +150,7 @@ extension ImagesListViewController: UITableViewDataSource {
 
         let photo = photos[indexPath.row]
 
-        ImageLoadService().loadImage(on: photo.thumbImageURL, completion: { result in
+        presenter.downloadImagePhoto(photo.thumbImageURL, completion: { result in
             switch result {
             case.success(let image):
                 imageListCell.imageState = .finished(image)

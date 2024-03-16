@@ -8,11 +8,13 @@
 import UIKit
 import Kingfisher
 
-protocol ImageLoaderProtocol {
-    func loadImage(on url: String, completion: @escaping (Result<UIImage, Error>) -> Void)
+typealias ResultImageError = (Result<UIImage, Error>) -> Void
+
+protocol ImageDownloadServiceProtocol {
+    func downloadImage(on url: String, completion: @escaping ResultImageError)
 }
 
-final class ImageLoadService: ImageLoaderProtocol {
+final class ImageDownloadService: ImageDownloadServiceProtocol {
 
     // MARK: - Public Properties
 
@@ -20,7 +22,7 @@ final class ImageLoadService: ImageLoaderProtocol {
 
     // MARK: - Public Methods
 
-    func loadImage(on stringUrl: String, completion: @escaping (Result<UIImage, Error>) -> Void) {
+    func downloadImage(on stringUrl: String, completion: @escaping (Result<UIImage, Error>) -> Void) {
        guard let imageURL = URL(string: stringUrl) else {
            completion(.failure(PhotoError.invalidURL))
            return
