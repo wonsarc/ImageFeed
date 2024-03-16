@@ -8,7 +8,13 @@
 import Foundation
 
 final class OAuth2Service {
+
+    // MARK: - Public Properties
+
     static let shared = OAuth2Service()
+
+    // MARK: - Private Properties
+
     private let authConfiguration = AuthConfiguration.standard
     private (set) var authToken: String? {
         get {
@@ -23,8 +29,12 @@ final class OAuth2Service {
     private var task: URLSessionTask?
     private let urlSession = URLSession.shared
 
+    // MARK: - Initializers
+
     private init() {
     }
+
+    // MARK: - Public Methods
 
     func fetchOAuthToken(
         _ code: String,
@@ -57,6 +67,8 @@ final class OAuth2Service {
             })
             task?.resume()
         }
+
+    // MARK: - Private Methods
 
     private func createQueryItems(_ code: String) -> [URLQueryItem] {
         let queryItemsList = [

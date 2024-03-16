@@ -26,11 +26,16 @@ protocol ImageListViewPresenterProtocol {
 }
 
 final class ImageListViewPresenter: ImageListViewPresenterProtocol {
-    // MARK: - Properties
+
+    // MARK: - Public Properties
+
     weak var view: ImagesListViewControllerProtocol?
     var profileImageListViewObserver: NSObjectProtocol?
     var imagesListService: ImagesListServiceProtocol = ImagesListService()
-    var imageLoader: ImageLoaderProtocol = ImageLoader()
+    var imageLoader: ImageLoaderProtocol = ImageLoadService()
+
+    // MARK: - Private Properties
+
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -39,11 +44,13 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
     }()
 
     // MARK: - Initializers
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Public Methods
+
     func fetchPhotos() {
         imagesListService.fetchPhotosNextPage()
     }
@@ -95,6 +102,7 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
     }
 
     // MARK: - Private Methods
+
     private func handleDataChangeNotification() {
         let oldCount = view?.photos.count
         let newCount = imagesListService.photos.count

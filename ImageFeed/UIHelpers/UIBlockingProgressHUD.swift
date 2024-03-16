@@ -9,16 +9,13 @@ import UIKit
 import ProgressHUD
 
 final class UIBlockingProgressHUD {
+
+    // MARK: - Public Properties
+
     static let accessibilityIdentifier = "UIBlockingProgressHUD"
     static var isShowing: Bool = false
-    private static var window: UIWindow? {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let window = windowScene.windows.first
-        else {
-            return nil
-        }
-        return window
-    }
+
+    // MARK: - Public Methods
 
     static func animate() {
         isShowing = true
@@ -33,5 +30,16 @@ final class UIBlockingProgressHUD {
         window?.isUserInteractionEnabled = true
         ProgressHUD.dismiss()
         window?.accessibilityIdentifier = nil
+    }
+
+    // MARK: - Private Methods
+
+    private static var window: UIWindow? {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first
+        else {
+            return nil
+        }
+        return window
     }
 }

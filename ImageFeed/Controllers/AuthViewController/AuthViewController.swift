@@ -12,10 +12,14 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
-    // MARK: - Private Properties
-    private let showWebViewSegueIdentifier = "ShowWebView"
+
+    // MARK: - Public Properties
+
     weak var delegate: AuthViewControllerDelegate?
 
+    // MARK: - Private Properties
+
+    private let showWebViewSegueIdentifier = "ShowWebView"
     private lazy var loginButton: UIButton = {
         let loginButton = UIButton.systemButton(
             with: UIImage(),
@@ -41,7 +45,8 @@ final class AuthViewController: UIViewController {
         return logoImage
     }()
 
-    // MARK: - View Life Cycles
+    // MARK: - Overrides Methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
@@ -55,7 +60,7 @@ final class AuthViewController: UIViewController {
                 let webViewController = segue.destination as? WebViewController
             else { fatalError("Failed to prepare for \(showWebViewSegueIdentifier)") }
 
-            let authHelper = AuthHelper()
+            let authHelper = AuthConfigurationService()
             let webViewPresenter = WebViewPresenter(authHelper: authHelper)
             webViewController.presenter = webViewPresenter
             webViewPresenter.view = webViewController
@@ -65,13 +70,29 @@ final class AuthViewController: UIViewController {
         }
     }
 
-    // MARK: - Private Func
+    // MARK: - Private Methods
+
     @objc private func didTapLoginButton() {
         performSegue(withIdentifier: showWebViewSegueIdentifier, sender: self)
     }
 }
 
+// MARK: - WebViewViewControllerDelegate
+
+extension AuthViewController: WebViewControllerDelegate {
+    func webViewController(_ viewController: WebViewController, didAuthenticateWithCode code: String) {
+        delegate?.authViewController(self, didAuthenticateWithCode: code)
+        dismiss(animated: true)
+        UIBlockingProgressHUD.animate()
+    }
+
+    func webViewControllerDidCancel(_ viewController: WebViewController) {
+        dismiss(animated: true)
+    }
+}
+
 // MARK: - Extension
+
 private extension AuthViewController {
     private func setupViews() {
         view.addSubview(loginButton)
@@ -90,18 +111,5 @@ private extension AuthViewController {
             logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
-    }
-}
-
-// MARK: - WebViewViewControllerDelegate
-extension AuthViewController: WebViewControllerDelegate {
-    func webViewController(_ viewController: WebViewController, didAuthenticateWithCode code: String) {
-        delegate?.authViewController(self, didAuthenticateWithCode: code)
-        dismiss(animated: true)
-        UIBlockingProgressHUD.animate()
-    }
-
-    func webViewControllerDidCancel(_ viewController: WebViewController) {
-        dismiss(animated: true)
     }
 }

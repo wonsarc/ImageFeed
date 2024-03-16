@@ -9,6 +9,9 @@ import UIKit
 import ProgressHUD
 
 final class SplashViewController: UIViewController {
+
+    // MARK: - Private Properties
+
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
@@ -21,7 +24,8 @@ final class SplashViewController: UIViewController {
         return logoImageView
     }()
 
-    // MARK: - View Life Cycles
+    // MARK: - Overrides Methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
@@ -39,7 +43,8 @@ final class SplashViewController: UIViewController {
         }
     }
 
-    // MARK: - Private Func
+    // MARK: - Private Methods
+
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
@@ -112,7 +117,8 @@ final class SplashViewController: UIViewController {
     }
 }
 
-// MARK: - Extension
+// MARK: - AuthViewControllerDelegate
+
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ viewController: AuthViewController, didAuthenticateWithCode code: String) {
         dismiss(animated: true) { [weak self] in
