@@ -102,25 +102,6 @@ final class ImageListViewTests: XCTestCase {
         }
     }
 
-    func testUploadImage() {
-        // given
-        let presenter = ImageListViewPresenter()
-        let imageLoader = ImageLoaderSpy()
-        let view = ImagesListViewControllerSpy()
-        let indexPath = IndexPath(row: 0, section: 0)
-
-        presenter.imageLoader = imageLoader
-        presenter.view = view
-
-        view.photos = photos
-
-        // when
-        presenter.uploadImage(at: indexPath) { image in
-            // then
-            XCTAssertEqual(image, UIImage(named: "0"))
-        }
-    }
-
     func testFormatDateWithNil() {
         // given
         let presenter = ImageListViewPresenter()

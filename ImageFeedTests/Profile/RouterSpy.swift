@@ -8,7 +8,7 @@
 @testable import ImageFeed
 import Foundation
 
-final class RouterSpy: LogoutRouterProtocol {
+final class RouterSpy: ProfileViewRouterProtocol {
     var view: ImageFeed.ProfileViewControllerProtocol?
     var didCallLogout = false
 

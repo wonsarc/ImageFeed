@@ -5,37 +5,30 @@
 //  Created by Artem Krasnov on 26.02.2024.
 //
 
-import UIKit
+import Foundation
 
 protocol ProfileViewPresenterProtocol {
     var view: ProfileViewControllerProtocol? {get set}
-    func updateAvatar()
+
     func startObservingProfileImageChanges()
     func setupGradientAnimation()
     func didLogout()
+    func downloadAvatar(_ avatarURL: String, completion: @escaping ResultImageError)
 }
 
 final class ProfileViewPresenter: ProfileViewPresenterProtocol {
+
+    // MARK: - Public Properties
+
     weak var view: ProfileViewControllerProtocol?
     var profileImageServiceObserver: NSObjectProtocol?
-    var router: LogoutRouterProtocol = LogoutRouter()
+    var router: ProfileViewRouterProtocol = ProfileViewRouter()
 
-    func updateAvatar() {
-         guard
-             let view = view,
-             let avatarURL = ProfileImageService.shared.avatarURL,
-             let url = URL(string: avatarURL)
-         else { return }
-
-         view.logoImageView.kf.setImage(
-             with: url,
-             placeholder: UIImage(named: "User")
-         )
-     }
+    // MARK: - Public Methods
 
     func setupGradientAnimation() {
         guard let view = view else { return }
-        ProfileHelper().setupGradientAnimation(view: view)
+        ProfileService().setupGradientAnimation(view: view)
     }
 
     func startObservingProfileImageChanges() {
@@ -46,11 +39,15 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
                 queue: .main
             ) { [weak self] _ in
                 guard let self = self else {return}
-                updateAvatar()
+                view?.updateAvatar()
             }
     }
 
     func didLogout() {
         router.logout()
+    }
+
+    func downloadAvatar(_ avatarURL: String, completion: @escaping ResultImageError) {
+        ImageDownloadService().downloadImage(on: avatarURL, completion: completion)
     }
 }

@@ -15,41 +15,19 @@ protocol ProfileViewControllerProtocol: AnyObject {
     var loginLabel: UILabel { get set }
     var descriptionLabel: UILabel { get set }
     var animationLayers: Set<CALayer> { get set }
+
     func present(_ viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?)
     func updateProfileDetails(profile: Profile)
+    func updateAvatar()
 }
 
 final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
+
+    // MARK: - Public Properties
+
     var presenter: ProfileViewPresenterProtocol?
     var animationLayers = Set<CALayer>()
 
-    // MARK: - View Life Cycles
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        logoImageView.layer.cornerRadius = logoImageView.frame.size.width / 2
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        let profileViewPresenter = ProfileViewPresenter()
-        self.presenter = profileViewPresenter
-        profileViewPresenter.view = self
-
-        view.backgroundColor = .ypBlack
-        setupViews()
-        setupConstraints()
-        presenter?.setupGradientAnimation()
-
-        if let profile = ProfileService.shared.profile {
-            updateProfileDetails(profile: profile)
-        }
-
-        presenter?.startObservingProfileImageChanges()
-        animationLayers.forEach { $0.removeFromSuperlayer() }
-        presenter?.updateAvatar()
-    }
-
-    // MARK: - Private Properties
     lazy var logoImageView: UIImageView = {
         let logoImageView = UIImageView()
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -82,6 +60,8 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         return descriptionLabel
     }()
 
+    // MARK: - Private Properties
+
     private lazy var logoutButton: UIButton = {
         let logoutButton = UIButton.systemButton(
             with: UIImage(named: "LogOut") ?? UIImage(),
@@ -94,14 +74,58 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         return logoutButton
     }()
 
-    // MARK: - Public Func
+    // MARK: - View Life Cycles
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        logoImageView.layer.cornerRadius = logoImageView.frame.size.width / 2
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let profileViewPresenter = ProfileViewPresenter()
+        self.presenter = profileViewPresenter
+        profileViewPresenter.view = self
+
+        view.backgroundColor = .ypBlack
+        setupViews()
+        setupConstraints()
+        presenter?.setupGradientAnimation()
+
+        if let profile = ProfileService.shared.profile {
+            updateProfileDetails(profile: profile)
+        }
+
+        presenter?.startObservingProfileImageChanges()
+        animationLayers.forEach { $0.removeFromSuperlayer() }
+        updateAvatar()
+    }
+
+    // MARK: - Public Methods
+
     func updateProfileDetails(profile: Profile) {
         nameLabel.text = profile.name
         loginLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
     }
 
-    // MARK: - Private Func
+    func updateAvatar() {
+        guard
+            let avatarURL = ProfileImageService.shared.avatarURL
+        else { return }
+
+        presenter?.downloadAvatar(avatarURL, completion: { result in
+            switch result {
+            case.success(let image):
+                self.logoImageView.image = image
+            case .failure(let error):
+                print("Ошибка при загрузке изображения: \(error)")
+            }
+        })
+    }
+
+    // MARK: - Private Methods
+
     private func setupViews() {
         view.addSubview(logoImageView)
         view.addSubview(nameLabel)
@@ -144,7 +168,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
 
     @objc
     private func didTapLogoutButton() {
-        let alert = ProfileHelper().createLogoutAlert {
+        let alert = ProfileService().createLogoutAlert {
             self.presenter?.didLogout()
         }
         present(alert, animated: true, completion: nil)

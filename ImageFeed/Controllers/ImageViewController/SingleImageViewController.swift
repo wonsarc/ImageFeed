@@ -9,21 +9,34 @@ import UIKit
 import Kingfisher
 
 final class SingleImageViewController: UIViewController {
-    // MARK: - Public Properties
-    var imageURL: String? {
-        didSet {
-            downloadImage()
-        }
-    }
 
     // MARK: - IB Outlets
+
     @IBOutlet private weak var photoSingleImageView: UIImageView!
 
     @IBOutlet private weak var scrollView: UIScrollView!
 
     @IBOutlet private weak var sharedButton: UIButton!
 
+    // MARK: - Public Properties
+
+    var imageURL: String? {
+        didSet {
+            downloadImage()
+        }
+    }
+
+    // MARK: - Overrides Methods
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        scrollView.minimumZoomScale = 0.1
+        scrollView.maximumZoomScale = 1.25
+        downloadImage()
+    }
+
     // MARK: - IB Action
+
     @IBAction func didTapBackButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
@@ -35,15 +48,8 @@ final class SingleImageViewController: UIViewController {
         ), animated: true)
     }
 
-    // MARK: - View Life Cycles
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        scrollView.minimumZoomScale = 0.1
-        scrollView.maximumZoomScale = 1.25
-        downloadImage()
-    }
+    // MARK: - Private Methods
 
-    // MARK: - Private func
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale
         let maxZoomScale = scrollView.maximumZoomScale
@@ -82,6 +88,7 @@ final class SingleImageViewController: UIViewController {
 }
 
 // MARK: - UIScrollViewDelegate
+
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         photoSingleImageView

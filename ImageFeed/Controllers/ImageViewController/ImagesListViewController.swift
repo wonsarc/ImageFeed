@@ -11,12 +11,15 @@ import Kingfisher
 protocol ImagesListViewControllerProtocol: AnyObject {
     var presenter: ImageListViewPresenterProtocol? { get set }
     var photos: [Photo] { get set }
+
     func updateTableViewAnimated(oldCount: Int, newCount: Int)
     func showLoading(isLoading: Bool)
 }
 
 final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
+
     // MARK: - IB Outlets
+
     @IBOutlet private weak var tableView: UITableView! {
         didSet {
             tableView.dataSource = self
@@ -27,14 +30,18 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         }
     }
 
-    // MARK: - Properties
+    // MARK: - Public Properties
+
     var presenter: ImageListViewPresenterProtocol?
     var photos: [Photo] = []
+
+    // MARK: - Private Properties
 
     private let activityIndicatorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
 
-    // MARK: - View Life Cycles
+    // MARK: - Overrides Methods
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSegueIdentifier {
             guard let viewController = segue.destination as? SingleImageViewController else {return}
@@ -54,6 +61,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     }
 
     // MARK: - Public Methods
+
     func updateTableViewAnimated(oldCount: Int, newCount: Int) {
         guard oldCount != newCount else { return }
         tableView.performBatchUpdates {
@@ -73,12 +81,14 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     }
 
     // MARK: - Private Methods
+
     private func configurePresenter() {
         presenter = ImageListViewPresenter()
         presenter?.view = self
     }
 
     // MARK: - Activity Indicator Methods
+
     private func configureActivityIndicator() {
         tableView.tableFooterView = activityIndicatorView
     }
@@ -93,6 +103,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
 }
 
 // MARK: - UITableViewDelegate
+
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
@@ -107,6 +118,7 @@ extension ImagesListViewController: UITableViewDelegate {
 }
 
 // MARK: - ImagesListCellDelegate
+
 extension ImagesListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
@@ -119,6 +131,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
 }
 
 // MARK: - UITableViewDataSource
+
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return photos.count
@@ -135,16 +148,18 @@ extension ImagesListViewController: UITableViewDataSource {
 
         guard let presenter = presenter else { return UITableViewCell()}
 
-        presenter.uploadImage(at: indexPath) { image in
-            if let image = image {
-                imageListCell.imageState = .finished(image)
-            } else {
-                imageListCell.imageState = .error
-                print("Ошибка при загрузке изображения")
-            }
-        }
-
         let photo = photos[indexPath.row]
+
+        presenter.downloadImagePhoto(photo.thumbImageURL, completion: { result in
+            switch result {
+            case.success(let image):
+                imageListCell.imageState = .finished(image)
+            case .failure(let error):
+                imageListCell.imageState = .error
+                print("Ошибка при загрузке изображения: \(error)")
+            }
+        })
+
         let formatDate = presenter.formatDate(photo.createdAt)
 
         imageListCell.configureCell(

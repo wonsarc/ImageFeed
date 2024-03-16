@@ -13,13 +13,16 @@ protocol ImagesListCellDelegate: AnyObject {
 }
 
 final class ImagesListCell: UITableViewCell {
+
     // MARK: - IB Outlets
+
     @IBOutlet private weak var cellView: UIImageView!
     @IBOutlet private weak var likeButton: UIButton!
     @IBOutlet private weak var dateLabel: UILabel!
     @IBOutlet private weak var gradientView: UIView!
 
     // MARK: - Public Properties
+
     weak var delegate: ImagesListCellDelegate?
     static let reuseIdentifier = "ImagesListCell"
     var animationLayers = Set<CALayer>()
@@ -39,10 +42,12 @@ final class ImagesListCell: UITableViewCell {
     }
 
     // MARK: - Private Properties
+
     private var gradientLayer: CAGradientLayer = CAGradientLayer()
     private var gradientAnimationHelper = GradientAnimationHelper()
 
     // MARK: - Overrides Methods
+
     override func layoutSubviews() {
         super.layoutSubviews()
         gradientLayer.frame = gradientView.bounds
@@ -61,15 +66,17 @@ final class ImagesListCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        cellView.image = nil // сброс изображенияя ячейки перед повторным использованием
+        cellView.image = nil
     }
 
     // MARK: - IB Actions
+
     @IBAction private func likeButtonClicked(_ sender: Any) {
         delegate?.imageListCellDidTapLike(self)
     }
 
     // MARK: - Public Methods
+
     func configureCell(date: String, isLiked: Bool) {
         cellView.layer.cornerRadius = 16
         cellView.layer.masksToBounds = true
@@ -84,6 +91,7 @@ final class ImagesListCell: UITableViewCell {
     }
 
     // MARK: - Private Methods
+
     private func configGradientView() {
         gradientView.backgroundColor = .clear
 

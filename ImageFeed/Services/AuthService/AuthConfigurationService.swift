@@ -1,5 +1,5 @@
 //
-//  AuthHelper.swift
+//  AuthConfigurationService.swift
 //  ImageFeed
 //
 //  Created by Artem Krasnov on 21.02.2024.
@@ -7,17 +7,24 @@
 
 import Foundation
 
-protocol AuthHelperProtocol {
+protocol AuthConfigurationServiceProtocol {
     func authRequest() -> URLRequest?
     func code(from url: URL) -> String?
 }
 
-class AuthHelper: AuthHelperProtocol {
+class AuthConfigurationService: AuthConfigurationServiceProtocol {
+
+    // MARK: - Public Properties
+
     let configuration: AuthConfiguration
+
+    // MARK: - Initializers
 
     init(configuration: AuthConfiguration = .standard) {
         self.configuration = configuration
     }
+
+    // MARK: - Public Methods
 
     func authRequest() -> URLRequest? {
         let url = authURL()

@@ -8,6 +8,9 @@
 import UIKit
 
 final class GradientAnimationHelper {
+
+    // MARK: - Public Properties
+
     let animation: CABasicAnimation = {
         let gradientChangeAnimation = CABasicAnimation(keyPath: "locations")
         gradientChangeAnimation.duration = 1.0
@@ -16,6 +19,8 @@ final class GradientAnimationHelper {
         gradientChangeAnimation.toValue = [0, 0.8, 1]
         return gradientChangeAnimation
     }()
+
+    // MARK: - Public Methods
 
     func addGradient(size: CGSize, cornerRadius: CGFloat, view: UIView) -> CAGradientLayer {
         let gradient = CAGradientLayer()

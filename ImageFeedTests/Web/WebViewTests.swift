@@ -31,7 +31,7 @@ final class WebViewTests: XCTestCase {
     func testPresenterCallsLoadRequest() {
         // given
         let viewController = WebViewControllerSpy()
-        let authHelper = AuthHelper()
+        let authHelper = AuthConfigurationService()
         let presenter = WebViewPresenter(authHelper: authHelper)
         viewController.presenter = presenter
         presenter.view = viewController
@@ -46,7 +46,7 @@ final class WebViewTests: XCTestCase {
 
     func testProgressVisibleWhenLessThenOne() {
         // given
-        let authHelper = AuthHelper()
+        let authHelper = AuthConfigurationService()
         let presenter = WebViewPresenter(authHelper: authHelper)
         let progress: Float = 0.6
 
@@ -59,7 +59,7 @@ final class WebViewTests: XCTestCase {
 
     func testProgressHiddenWhenOne() {
         // given
-        let authHelper = AuthHelper()
+        let authHelper = AuthConfigurationService()
         let presenter = WebViewPresenter(authHelper: authHelper)
         let progress: Float = 1
 
@@ -73,7 +73,7 @@ final class WebViewTests: XCTestCase {
     func testAuthHelperAuthURL() {
         // given
         let configuration = AuthConfiguration.standard
-        let authHelper = AuthHelper(configuration: configuration)
+        let authHelper = AuthConfigurationService(configuration: configuration)
 
         // when
         let url = authHelper.authURL()
@@ -91,7 +91,7 @@ final class WebViewTests: XCTestCase {
     func testCodeFromURL() {
         // given
         let expCodeValue = "test code"
-        let authHelper = AuthHelper()
+        let authHelper = AuthConfigurationService()
         var urlComponents = URLComponents(string: "https://unsplash.com/oauth/authorize/native")
         urlComponents?.queryItems = [URLQueryItem(name: "code", value: expCodeValue)]
         guard let url = urlComponents?.url else { return }

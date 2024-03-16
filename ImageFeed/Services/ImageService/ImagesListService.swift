@@ -9,16 +9,20 @@ import Foundation
 
 protocol ImagesListServiceProtocol {
     var photos: [Photo] { get }
+
     func fetchPhotosNextPage()
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 final class ImagesListService: ImagesListServiceProtocol {
-    // MARK: - Static Properties
+
+    // MARK: - Public Properties
+
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
-    private let isTestMode =  ProcessInfo.processInfo.arguments.contains("testMode")
 
     // MARK: - Private Properties
+
+    private let isTestMode =  ProcessInfo.processInfo.arguments.contains("testMode")
     private let photosURL = "\(AuthConfiguration.standard.defaultBaseURL)/photos"
     private let networkClient = NetworkClient()
     private let urlSession = URLSession.shared
@@ -28,7 +32,8 @@ final class ImagesListService: ImagesListServiceProtocol {
     private (set) var photos: [Photo] = []
     private var task: URLSessionTask?
 
-    // MARK: - Public Func
+    // MARK: - Public Methods
+
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
         if task != nil {
@@ -82,7 +87,8 @@ final class ImagesListService: ImagesListServiceProtocol {
         task?.resume()
     }
 
-    // MARK: - Private Func
+    // MARK: - Private Methods
+
     private func createNotification() {
         NotificationCenter.default
             .post(

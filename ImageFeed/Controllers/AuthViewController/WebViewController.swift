@@ -15,19 +15,22 @@ protocol WebViewControllerDelegate: AnyObject {
 
 protocol WebViewControllerProtocol: AnyObject {
     var presenter: WebViewPresenterProtocol? { get set }
+
     func load(request: URLRequest)
     func setProgressValue(_ newValue: Float)
     func setProgressHidden(_ isHidden: Bool)
 }
 
 final class WebViewController: UIViewController, WebViewControllerProtocol {
-    private var estimatedProgressObservation: NSKeyValueObservation?
 
-    // MARK: - Properties
+    // MARK: - Public Properties
+
     weak var delegate: WebViewControllerDelegate?
     var presenter: WebViewPresenterProtocol?
 
     // MARK: - Private Properties
+
+    private var estimatedProgressObservation: NSKeyValueObservation?
     private lazy var wkWebView: WKWebView = {
         let webView = WKWebView()
         webView.accessibilityIdentifier = "UnsplashWebView"
@@ -57,7 +60,8 @@ final class WebViewController: UIViewController, WebViewControllerProtocol {
         return uiProgressView
     }()
 
-    // MARK: - View Life Cycles
+    // MARK: - Overrides Methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
@@ -69,7 +73,8 @@ final class WebViewController: UIViewController, WebViewControllerProtocol {
         createObserveEstimatedProgress()
     }
 
-    // MARK: - Func
+    // MARK: - Public Methods
+
     static func cleanCookie() {
        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
@@ -91,13 +96,15 @@ final class WebViewController: UIViewController, WebViewControllerProtocol {
         uiProgressView.isHidden = isHidden
     }
 
-    // MARK: - Private Func
+    // MARK: - Private Methods
+
     @objc private func didTapBackButton() {
         delegate?.webViewControllerDidCancel(self)
     }
 }
 
-// MARK: - Extension
+// MARK: - WKNavigationDelegate
+
 extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
@@ -119,6 +126,7 @@ extension WebViewController: WKNavigationDelegate {
 }
 
 // MARK: - Private extension
+
 private extension WebViewController {
     func setupViews() {
         view.addSubview(wkWebView)

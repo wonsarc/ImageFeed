@@ -9,22 +9,31 @@ import Foundation
 
 protocol WebViewPresenterProtocol {
     var view: WebViewControllerProtocol? {get set}
+
     func viewDidLoad()
     func didUpdateProgressValue(_ newValue: Double)
     func code(from url: URL) -> String?
 }
 
 final class WebViewPresenter: WebViewPresenterProtocol {
-    // MARK: - Properties
+
+    // MARK: - Public Properties
+
     weak var view: WebViewControllerProtocol?
-    private var authHelper: AuthHelperProtocol
+
+    // MARK: - Private Properties
+
+    private var authHelper: AuthConfigurationServiceProtocol
     private let authConfiguration = AuthConfiguration.standard
 
-    init(authHelper: AuthHelperProtocol) {
+    // MARK: - Initializers
+
+    init(authHelper: AuthConfigurationServiceProtocol) {
         self.authHelper = authHelper
     }
 
     // MARK: - Public Methods
+
     func viewDidLoad() {
         let request = authHelper.authRequest()
         guard let request = request else { return }
