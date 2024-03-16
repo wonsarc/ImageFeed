@@ -43,6 +43,7 @@
 		41999D162B55A67A00A82FD3 /* OAuthTokenResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41999D152B55A67A00A82FD3 /* OAuthTokenResponseBody.swift */; };
 		41999D182B55AA3B00A82FD3 /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41999D172B55AA3B00A82FD3 /* OAuth2Service.swift */; };
 		41A6A3042B66C43300E6944D /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 41A6A3032B66C43300E6944D /* Kingfisher */; };
+		41A896EC2BA5AF4C00501F36 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 41A896EB2BA5AF4C00501F36 /* README.md */; };
 		41BC82572B5865A400148BA0 /* OAuth2TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BC82562B5865A400148BA0 /* OAuth2TokenStorage.swift */; };
 		41BC825A2B5C1B2E00148BA0 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BC82592B5C1B2E00148BA0 /* SplashViewController.swift */; };
 		41BE1A492B8D09BB00FC9CE1 /* ProfileViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BE1A482B8D09BB00FC9CE1 /* ProfileViewPresenter.swift */; };
@@ -115,6 +116,7 @@
 		4198937E2B946990001B0A8D /* ImageFeedUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeedUITests.swift; sourceTree = "<group>"; };
 		41999D152B55A67A00A82FD3 /* OAuthTokenResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenResponseBody.swift; sourceTree = "<group>"; };
 		41999D172B55AA3B00A82FD3 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
+		41A896EB2BA5AF4C00501F36 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		41BC82562B5865A400148BA0 /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
 		41BC82592B5C1B2E00148BA0 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		41BE1A482B8D09BB00FC9CE1 /* ProfileViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewPresenter.swift; sourceTree = "<group>"; };
@@ -319,6 +321,7 @@
 		41DE19A32AD3187300C4E2FF = {
 			isa = PBXGroup;
 			children = (
+				41A896EB2BA5AF4C00501F36 /* README.md */,
 				41DE19AE2AD3187300C4E2FF /* ImageFeed */,
 				4110A0B82B89285A00920777 /* ImageFeedTests */,
 				4198937D2B946990001B0A8D /* ImageFeedUITests */,
@@ -498,6 +501,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41A896EC2BA5AF4C00501F36 /* README.md in Resources */,
 				419893692B91C69B001B0A8D /* Localizable.strings in Resources */,
 				41DE19BC2AD3187400C4E2FF /* LaunchScreen.storyboard in Resources */,
 				416E23572ADFBF8D00108466 /* ImagesListCell.xib in Resources */,
